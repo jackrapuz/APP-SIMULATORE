@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pilota — Sim Racing Academy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <button id="hamburger" aria-label="Apri menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <div id="overlay"></div>
+
+  <nav id="sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-mark">⬡</span>
+      <span class="brand-name">PILOTA</span>
+    </div>
+    <ul id="nav-list" role="navigation" aria-label="Sezioni"></ul>
+    <div id="sidebar-progress">
+      <div class="progress-header">
+        <span class="progress-label">Progresso</span>
+        <span class="progress-pct" id="global-progress-pct">0%</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="global-progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main-content" role="main"></main>
+
+  <script src="sections/dashboard.js"></script>
+  <script src="sections/postazione.js"></script>
+  <script src="sections/ffb.js"></script>
+  <script src="sections/cambio.js"></script>
+  <script src="sections/teoria.js"></script>
+  <script src="sections/setup.js"></script>
+  <script src="sections/drill.js"></script>
+  <script src="sections/giochi.js"></script>
+  <script src="sections/glossario.js"></script>
+  <script src="sections/quaderno.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
