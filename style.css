@@ -402,8 +402,10 @@ h3, .h3 {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  overflow: hidden;
+  overflow-x: auto;
   margin-bottom: 1.5rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--surface2) transparent;
 }
 
 /* ============================================================
@@ -1088,6 +1090,345 @@ mark {
     height: 130px;
   }
 }
+
+/* ============================================================
+   SECTION FADE (transizione di navigazione)
+   ============================================================ */
+
+@keyframes sectionFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.section-fade {
+  animation: sectionFadeIn 150ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-fade { animation: none; }
+}
+
+/* ============================================================
+   COMPLETION BAR (segna sezione come completata)
+   ============================================================ */
+
+.completion-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 2.5rem;
+  padding: 1rem 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.completion-bar.is-done {
+  border-color: #27AE60;
+  background: rgba(39,174,96,0.08);
+}
+
+.completion-text {
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+}
+
+.completion-bar.is-done .completion-text {
+  color: #1E8449;
+  font-weight: 600;
+}
+
+/* ============================================================
+   WIZARD (postazione passo-passo)
+   ============================================================ */
+
+.wizard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.wizard-progress {
+  height: 4px;
+  background: var(--surface2);
+}
+
+.wizard-progress-fill {
+  height: 100%;
+  background: var(--red);
+  transition: width 0.4s ease;
+}
+
+.wizard-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.5rem 0.25rem;
+}
+
+.wizard-step-count {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-muted);
+}
+
+.wizard-step-state {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--ink-muted);
+}
+
+.wizard-step-state.done { color: #1E8449; font-weight: 600; }
+
+.wizard-body {
+  padding: 0.5rem 1.5rem 1.25rem;
+}
+
+.wizard-body h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  margin-bottom: 0.5rem;
+}
+
+.wizard-hw {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+  padding: 0.25em 0.7em;
+  background: rgba(192,57,43,0.08);
+  border: 1px solid var(--red);
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--red);
+}
+
+.wizard-block { margin-bottom: 1.1rem; }
+
+.wizard-block-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-muted);
+  margin-bottom: 0.4rem;
+}
+
+.wizard-howto {
+  list-style: none;
+  counter-reset: wsteps;
+}
+
+.wizard-howto li {
+  counter-increment: wsteps;
+  position: relative;
+  padding: 0.3rem 0 0.3rem 1.9rem;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+.wizard-howto li::before {
+  content: counter(wsteps);
+  position: absolute;
+  left: 0;
+  top: 0.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  background: var(--surface2);
+  color: var(--ink);
+  border-radius: 50%;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.wizard-why,
+.wizard-verify,
+.wizard-mistake {
+  font-size: var(--text-sm);
+  line-height: 1.55;
+}
+
+.wizard-mistake {
+  border-left: 3px solid var(--red);
+  background: rgba(192,57,43,0.05);
+  padding: 0.5rem 0.875rem;
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.wizard-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  padding: 0.875rem 1.5rem;
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.wizard-nav-btns { display: flex; gap: 0.5rem; }
+
+.wizard-dots {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.wizard-dot {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  cursor: pointer;
+  padding: 0;
+  transition: all var(--transition);
+}
+
+.wizard-dot.done { background: #27AE60; border-color: #27AE60; }
+.wizard-dot.current { box-shadow: 0 0 0 2px var(--red); }
+
+.wizard-done-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  user-select: none;
+}
+
+.wizard-done-toggle input {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: #27AE60;
+  cursor: pointer;
+}
+
+/* ============================================================
+   FOV CALCULATOR
+   ============================================================ */
+
+.fov-calc {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 1rem;
+  align-items: end;
+}
+
+.fov-result {
+  text-align: center;
+  padding: 0.5rem 1.25rem;
+  background: var(--ink);
+  border-radius: var(--radius-lg);
+  min-width: 120px;
+}
+
+.fov-result-value {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  color: #fff;
+  line-height: 1;
+}
+
+.fov-result-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--surface2);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 560px) {
+  .fov-calc { grid-template-columns: 1fr; }
+  .fov-result { margin-top: 0.5rem; }
+}
+
+/* ============================================================
+   DIAGNOSTICA SETUP (selettori + soluzioni)
+   ============================================================ */
+
+.diag-selectors {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 560px) {
+  .diag-selectors { grid-template-columns: 1fr; }
+}
+
+.solution-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--red);
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.625rem;
+}
+
+.solution-card .sol-what {
+  font-weight: 600;
+  font-size: var(--text-sm);
+  color: var(--ink);
+}
+
+.solution-card .sol-rank {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  background: var(--red);
+  color: #fff;
+  border-radius: 50%;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  margin-right: 0.5rem;
+}
+
+.solution-card .sol-line {
+  font-size: var(--text-xs);
+  color: var(--ink-muted);
+  margin-top: 0.3rem;
+  line-height: 1.5;
+}
+
+.solution-card .sol-line b { color: var(--ink); font-weight: 600; }
+
+/* ============================================================
+   FILTRO LIVELLI (setup)
+   ============================================================ */
+
+.level-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.1em 0.5em;
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.level-base     { background: rgba(39,174,96,0.14);  color: #1E8449; }
+.level-intermedio { background: rgba(139,111,71,0.16); color: var(--tan); }
+.level-avanzato { background: rgba(192,57,43,0.12);  color: var(--red); }
 
 /* ============================================================
    UTILITY CLASSES
