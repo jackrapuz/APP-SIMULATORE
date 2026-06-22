@@ -43,10 +43,29 @@
           titolo: 'Configurazione controller (CM)',
           contenuto: [
             'CM → Settings → Controls: seleziona il tuo volante Fanatec.',
-            'Steering wheel range: imposta uguale a SEN nel Tuning Menu (es. 900).',
+            'Steering wheel range: lascia che lo gestisca il gioco (SEN su AUTO nel Tuning Menu).',
             'Steering gamma: 1.0 (lineare). Speed sensitivity: 0.',
-            'Forza FF: inizia da 85%. Clipping check: usa il tasto F9 in pista (barra rossa = clip).',
-            'Freno: se hai un loadcell (ClubSport Pedals V3), metti brake gamma 1.0 e pressione a 100%.'
+            'Gain FF: 100% (la forza vera regolala dal volante/in-game). Clipping check: tasto F9 in pista (barra rossa = clip → abbassa il gain in-game).',
+            'Freno: con la tua ClubSport Pedals V3 (load cell) metti brake gamma 1.0; calibra la durezza con BRF nel Tuning Menu, non con la pressione software.'
+          ]
+        },
+        {
+          titolo: 'Overlay / HUD: serve? (valutazione AC Drive)',
+          contenuto: [
+            '<strong>Cosa risolve un pacchetto overlay:</strong> l\'HUD nativo di AC è povero. Una suite come <strong>AC Drive</strong> (~25€, licenza a vita) aggiunge dashboard pedali/marce, delta in tempo reale, mappa, gap, gomme, calcolatore carburante, spotter e funzioni VR/streaming.',
+            '<strong>Verdetto per te:</strong> a 25€ una-tantum è un acquisto sensato. La funzione che vale da sola il prezzo è il <strong>confronto telemetria con i top driver</strong>: vedere dove freni/acceleri rispetto a un riferimento è il modo più rapido per migliorare da principiante.',
+            '<strong>Alternative gratuite</strong> prima di spendere: <em>CG Pedals/Dash</em>, <em>Sidekick</em>, <em>RaceEssentials</em>, <em>Helicorsa</em> (spotter). Provale: se l\'HUD integrato ti basta, rimanda l\'acquisto.',
+            '<strong>Regola degli esperti (Driver61, Coach Dave):</strong> l\'overlay è uno strumento di <em>analisi</em>, non una stampella. Guida guardando la pista, poi studia i dati DOPO il run — non inseguire il delta in tempo reale curva per curva.'
+          ]
+        },
+        {
+          titolo: 'Come usare gli overlay per migliorare davvero',
+          contenuto: [
+            '<strong>1. Pedal trace su tutto:</strong> l\'errore #1 dei principianti è freno/gas on-off. Guarda la traccia: deve essere morbida, con rilascio progressivo del freno (trail braking), non un gradino.',
+            '<strong>2. Delta a fine giro, non durante:</strong> usa il confronto col reference driver tra un run e l\'altro. Isola UN settore alla volta e lavoraci.',
+            '<strong>3. Confronta input, non solo tempi:</strong> il valore del confronto telemetria è vedere <em>perché</em> il top driver è più veloce (frena più tardi? apre il gas prima? traiettoria più larga?).',
+            '<strong>4. Spotter sempre attivo</strong> appena fai gare/traffico: sapere chi hai a fianco evita contatti (e in ACC/iRacing salva il Safety Rating).',
+            '<strong>5. Disattiva il superfluo</strong> quando hai imparato la pista: troppi widget distraggono. Tieni delta, marce, gomme e spotter; togli il resto.'
           ]
         }
       ]
