@@ -43,13 +43,13 @@
             var realI = entries.length - 1 - i;
             return '<div class="entry-card">' +
               '<div class="entry-card-header">' +
-                '<span><span class="mono text-red">' + (e.param || '—') + '</span> <span style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--ink-muted);">' + (e.from || '?') + ' → ' + (e.to || '?') + '</span></span>' +
+                '<span><span class="mono text-red">' + escapeHtml(e.param || '—') + '</span> <span style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--ink-muted);">' + escapeHtml(e.from || '?') + ' → ' + escapeHtml(e.to || '?') + '</span></span>' +
                 '<div style="display:flex;align-items:center;gap:0.75rem;">' +
                   '<span class="entry-date">' + fmtDate(e.date) + '</span>' +
                   '<button class="entry-delete" data-index="' + realI + '" title="Elimina">✕</button>' +
                 '</div>' +
               '</div>' +
-              (e.note ? '<p class="text-sm text-muted">' + e.note + '</p>' : '') +
+              (e.note ? '<p class="text-sm text-muted">' + escapeHtml(e.note) + '</p>' : '') +
             '</div>';
           }).join('') +
           '</div>'
@@ -112,10 +112,10 @@
               var realI = sessions.length - 1 - i;
               return '<tr>' +
                 '<td><span class="mono">' + fmtDate(s.date) + '</span></td>' +
-                '<td>' + (s.track || '—') + '</td>' +
-                '<td style="font-size:var(--text-xs);color:var(--ink-muted);">' + (s.car || '—') + '</td>' +
-                '<td><span class="mono text-red">' + (s.lap || '—') + '</span></td>' +
-                '<td style="font-size:var(--text-xs);color:var(--ink-muted);max-width:180px;">' + (s.note || '') + '</td>' +
+                '<td>' + escapeHtml(s.track || '—') + '</td>' +
+                '<td style="font-size:var(--text-xs);color:var(--ink-muted);">' + escapeHtml(s.car || '—') + '</td>' +
+                '<td><span class="mono text-red">' + escapeHtml(s.lap || '—') + '</span></td>' +
+                '<td style="font-size:var(--text-xs);color:var(--ink-muted);max-width:180px;">' + escapeHtml(s.note || '') + '</td>' +
                 '<td><button class="entry-delete" data-index="' + realI + '" title="Elimina">✕</button></td>' +
               '</tr>';
             }).join('') +
@@ -179,9 +179,9 @@
             return '<div class="entry-card">' +
               '<div class="entry-card-header">' +
                 '<div>' +
-                  '<strong>' + (s.name || 'Setup') + '</strong>' +
-                  '<span style="margin-left:0.5rem;" class="badge">' + (s.car || '') + '</span>' +
-                  '<span style="margin-left:0.25rem;" class="tag">' + (s.track || '') + '</span>' +
+                  '<strong>' + escapeHtml(s.name || 'Setup') + '</strong>' +
+                  '<span style="margin-left:0.5rem;" class="badge">' + escapeHtml(s.car || '') + '</span>' +
+                  '<span style="margin-left:0.25rem;" class="tag">' + escapeHtml(s.track || '') + '</span>' +
                 '</div>' +
                 '<div style="display:flex;gap:0.5rem;">' +
                   '<button class="btn btn-ghost btn-sm setup-copy" data-index="' + realI + '">Copia</button>' +

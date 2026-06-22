@@ -6,29 +6,55 @@
 
   var SWITCH_STEPS = [
     {
-      titolo: 'Spegni il PC e stacca il cavo USB',
-      desc: 'Sempre esegui modifiche hardware a macchina spenta. Il ClubSport Shifter SQ V1.5 è plug-and-play via USB o via porta ShifterHub del volante.'
+      titolo: 'Trova lo slider sul lato inferiore del cambio',
+      desc: 'Il cambio modalità NON è un pulsante laterale: è uno slider fisico sotto al corpo del SQ V1.5, con due posizioni serigrafate "H" (icona 8) e "SEQ". Si può spostare anche a PC acceso.'
     },
     {
-      titolo: 'Localizza il pulsante H/SEQ sul lato del cambio',
-      desc: 'Sul lato sinistro del corpo del SQ V1.5 c\'è un piccolo pulsante fisico a slitta o a pressione. Leggi l\'etichetta "H / SEQ" incisa sul corpo.'
+      titolo: 'Modalità H-Pattern → slider su "8"',
+      desc: 'Sposta lo slider sulla posizione "8" (H). Il cambio riconosce le marce disposte a H (R, 1-2, 3-4, 5-6, 7) e le mantiene ingranate. Per GT manuali, turismo, classiche.'
     },
     {
-      titolo: 'Modalità H (sequenziale → H-pattern)',
-      desc: 'Sposta il selettore verso l\'alto (posizione H). In questa modalità il cambio riconosce 7 marce + retromarcia disposte a H. Perfetto per auto GT, turismo, classiche.'
+      titolo: 'Modalità Sequenziale → slider su "SEQ"',
+      desc: 'Sposta lo slider su "SEQ". La leva diventa avanti = +1 / indietro = -1. NOTA: in sequenziale la marcia NON resta ingranata: dopo ogni spinta la leva torna in folle (è normale). Per monoposto, rally, prototipi.'
     },
     {
-      titolo: 'Modalità SEQ (H-pattern → sequenziale)',
-      desc: 'Sposta il selettore verso il basso (posizione SEQ). Il cambio diventa una leva avanti/indietro: avanti = +1, indietro = -1. Usare per monoposto, rally, vetture con paddle che non hai.'
+      titolo: 'Cambia il pomello in base alla modalità',
+      desc: 'Hai due pomelli in dotazione. Per smontare il pomello sequenziale svita in senso antiorario; per montare quello a sfera (H) avvita in senso orario fino a bloccarlo. Usa il pomello a sfera in H e quello sequenziale in SEQ.'
     },
     {
-      titolo: 'Ricollega e calibra in-game',
-      desc: 'Avvia il gioco, vai in Opzioni → Controller → Configura asse/bottoni cambio. Mappa ogni marcia separatamente in modalità H, o assegna Gear Up/Down in modalità SEQ.'
+      titolo: 'Retromarcia e 7ª marcia (modalità H)',
+      desc: 'R e 7ª si innestano spingendo la leva VERSO IL BASSO e selezionando contemporaneamente la posizione: R in alto a sinistra, 7ª in basso a destra.'
     },
     {
-      titolo: 'Verifica in pista',
-      desc: 'Fai un giro lento verificando che ogni ingranaggio risponda correttamente. In modalità H, assicurati che la retromarcia (di solito con pressione verso il basso + sinistra) funzioni.'
+      titolo: 'Mappa il cambio in gioco',
+      desc: 'In H mappa ogni marcia separatamente (Opzioni → Controller). In SEQ assegna solo Gear Up / Gear Down. Per le auto H ricorda di mappare anche la frizione (pedale o paddle).'
     }
+  ];
+
+  /* Calibrazione H-pattern — dal manuale Fanatec (2 metodi) */
+  var CALIB_WHEEL = [
+    'Metti lo slider del cambio in modalità H (posizione "8").',
+    'Sul volante RS premi la combinazione di tasti indicata nella Quick Start Guide del volante per entrare in calibrazione cambio.',
+    'Sul display del volante comparirà la marcia da calibrare (es. "6_n").',
+    'Porta la leva nella posizione di quella marcia.',
+    'Conferma con il tasto indicato sulla QSG del volante.',
+    'Ripeti per tutte le marce (R, 1-7 e folle).'
+  ];
+
+  var CALIB_APP = [
+    'Collega la base al PC via USB e metti il cambio in modalità H.',
+    'Apri la Fanatec App e seleziona la scheda "SHIFTER".',
+    'Clicca "H-SHIFTER CALIBRATION".',
+    'Tieni la leva in FOLLE e premi "NEUTRAL SET".',
+    'La app mostra la marcia da calibrare: portaci la leva e conferma. Ripeti per tutte (9 passaggi).',
+    'Quando finisci, chiudi: la calibrazione è salvata nella base.'
+  ];
+
+  var SETUP_TIPS = [
+    { t: 'Quando ricalibrare', d: 'Dopo un aggiornamento firmware della base il cambio H può smettere di funzionare: rifai la calibrazione. È la causa #1 di "marce sbagliate".' },
+    { t: 'Durezza dello shift', d: 'Puoi regolare la resistenza della leva con una brugola da 5 mm nell\'apertura di regolazione sul corpo del cambio: "+" più dura, "−" più morbida.' },
+    { t: 'Collegamento', d: 'Collega il cambio alla porta "Shifter 1" della base con il cavo RJ12 incluso (oppure all\'adattatore USB ClubSport se usi il cambio da solo).' },
+    { t: 'Bulloni e utensili', d: 'Per fissarlo: brugola 2 mm per i tappi di fondo, bulloni M5 (laterale, filetto max 8 mm) o M6 (sotto, max 15 mm) NON inclusi. Le T-nut sono incluse.' }
   ];
 
   var H_VS_SEQ = [
@@ -90,13 +116,44 @@
 
       /* Switch H/SEQ */
       '<h2 class="mb-2">Switch modalità H ↔ Sequenziale</h2>' +
-      '<div class="callout mb-3"><strong>Attenzione:</strong> Esegui la procedura sempre a macchina spenta e con il gioco chiuso.</div>' +
+      '<div class="callout mb-3"><strong>Slider sul fondo:</strong> il cambio modalità è meccanico e immediato. Lo switch del pomello va invece fatto con calma.' +
+        '<div class="mt-2" style="font-size:var(--text-xs);">' +
+          '📄 <a href="ClubSport%20Shifter%20SQ%20V1.5%20%2B%20ClubSport%20USB%20Adapter%20Manual%20_%20Quick%20Start%20Guide%20_%20Fanatec.pdf" target="_blank">Manuale ClubSport Shifter SQ V1.5</a>' +
+        '</div>' +
+      '</div>' +
       '<div class="card mb-4">' +
         '<ol class="step-list">' +
         SWITCH_STEPS.map(function (s) {
           return '<li><div><strong>' + s.titolo + '</strong><p class="text-muted text-sm mt-1">' + s.desc + '</p></div></li>';
         }).join('') +
         '</ol>' +
+      '</div>' +
+
+      /* Calibrazione marce */
+      '<h2 class="mb-2">Calibrazione marce (H-Pattern)</h2>' +
+      '<p class="text-muted text-sm mb-2">Necessaria al primo uso e dopo ogni aggiornamento firmware. Due metodi:</p>' +
+      '<div style="display:flex;flex-wrap:wrap;gap:1.5rem;margin-bottom:1.5rem;">' +
+        '<div class="card" style="flex:1;min-width:260px;">' +
+          '<div class="card-title mb-2">Metodo A — dal volante</div>' +
+          '<ol class="step-list">' +
+          CALIB_WHEEL.map(function (s) { return '<li>' + s + '</li>'; }).join('') +
+          '</ol>' +
+        '</div>' +
+        '<div class="card" style="flex:1;min-width:260px;">' +
+          '<div class="card-title mb-2">Metodo B — Fanatec App</div>' +
+          '<ol class="step-list">' +
+          CALIB_APP.map(function (s) { return '<li>' + s + '</li>'; }).join('') +
+          '</ol>' +
+        '</div>' +
+      '</div>' +
+
+      /* Tips setup */
+      '<h2 class="mb-2">Note utili di setup</h2>' +
+      '<div id="cambio-accordion" class="mb-4">' +
+      SETUP_TIPS.map(function (s) {
+        return '<details><summary>' + s.t + '</summary>' +
+          '<div class="details-body"><p>' + s.d + '</p></div></details>';
+      }).join('') +
       '</div>' +
 
       /* H vs SEQ table */

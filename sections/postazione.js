@@ -28,37 +28,49 @@
   ];
 
   var SIDE_SVG =
-    '<svg class="svg-diagram" viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg" style="max-width:280px;">' +
-    /* Sedile */
-    '<rect x="70" y="80" width="60" height="90" rx="4" fill="#D4CCB8" stroke="#8B6F47" stroke-width="1.5"/>' +
-    /* Schienale */
-    '<rect x="55" y="20" width="22" height="75" rx="4" fill="#D4CCB8" stroke="#8B6F47" stroke-width="1.5" transform="rotate(-5 66 55)"/>' +
-    /* Persona - testa */
-    '<circle cx="100" cy="30" r="14" fill="#E8E1D5" stroke="#1A1814" stroke-width="1.5"/>' +
-    /* Busto */
-    '<line x1="100" y1="44" x2="92" y2="80" stroke="#1A1814" stroke-width="3" stroke-linecap="round"/>' +
-    /* Braccio superiore */
-    '<line x1="94" y1="50" x2="150" y2="65" stroke="#1A1814" stroke-width="2.5" stroke-linecap="round"/>' +
-    /* Braccio basso */
-    '<line x1="150" y1="65" x2="185" y2="50" stroke="#1A1814" stroke-width="2.5" stroke-linecap="round"/>' +
-    /* Volante */
-    '<circle cx="185" cy="45" r="18" fill="none" stroke="#C0392B" stroke-width="3"/>' +
-    '<line x1="167" y1="45" x2="203" y2="45" stroke="#C0392B" stroke-width="2"/>' +
-    '<line x1="185" y1="27" x2="185" y2="63" stroke="#C0392B" stroke-width="2"/>' +
-    /* Coscia */
-    '<line x1="92" y1="80" x2="145" y2="88" stroke="#1A1814" stroke-width="3" stroke-linecap="round"/>' +
-    /* Gamba */
-    '<line x1="145" y1="88" x2="158" y2="130" stroke="#1A1814" stroke-width="2.5" stroke-linecap="round"/>' +
-    /* Piede */
-    '<line x1="158" y1="130" x2="190" y2="128" stroke="#1A1814" stroke-width="2.5" stroke-linecap="round"/>' +
-    /* Pedaliera */
-    '<rect x="185" y="118" width="30" height="25" rx="2" fill="#D4CCB8" stroke="#8B6F47" stroke-width="1.5"/>' +
-    /* Arco angolo schiena */
-    '<path d="M 82 50 A 25 25 0 0 1 95 73" fill="none" stroke="#C0392B" stroke-width="1.5" stroke-dasharray="3 2"/>' +
-    '<text x="60" y="68" font-size="9" font-family="monospace" fill="#C0392B">105°</text>' +
-    /* Arco angolo ginocchio */
-    '<path d="M 132 86 A 20 20 0 0 1 148 102" fill="none" stroke="#8B6F47" stroke-width="1.5" stroke-dasharray="3 2"/>' +
-    '<text x="152" y="100" font-size="9" font-family="monospace" fill="#8B6F47">120°</text>' +
+    '<svg class="svg-diagram" viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg" style="max-width:300px;">' +
+    /* ---- Linea pavimento ---- */
+    '<line x1="20" y1="200" x2="285" y2="200" stroke="#8B6F47" stroke-width="1" opacity="0.4"/>' +
+    /* ---- Sedile racing (seduta + schienale avvolgente) ---- */
+    /* seduta */
+    '<path d="M 70 150 L 150 150 Q 158 150 158 142 L 150 132 L 72 134 Q 64 136 64 144 Z" fill="#D4CCB8" stroke="#8B6F47" stroke-width="1.5" stroke-linejoin="round"/>' +
+    /* schienale inclinato ~105° */
+    '<path d="M 64 144 L 52 60 Q 51 50 61 49 L 78 52 Q 86 54 86 64 L 88 140 Z" fill="#D4CCB8" stroke="#8B6F47" stroke-width="1.5" stroke-linejoin="round"/>' +
+    /* bordo laterale avvolgente schienale */
+    '<path d="M 52 60 Q 44 70 46 110" fill="none" stroke="#8B6F47" stroke-width="1.5" opacity="0.7"/>' +
+    /* poggiatesta */
+    '<rect x="50" y="36" width="20" height="20" rx="5" fill="#D4CCB8" stroke="#8B6F47" stroke-width="1.5"/>' +
+    /* ---- Pilota ---- */
+    /* testa */
+    '<circle cx="86" cy="46" r="13" fill="#E8E1D5" stroke="#1A1814" stroke-width="1.8"/>' +
+    /* collo */
+    '<line x1="86" y1="59" x2="90" y2="68" stroke="#1A1814" stroke-width="3" stroke-linecap="round"/>' +
+    /* busto (spalla -> bacino), inclinato come lo schienale */
+    '<line x1="90" y1="68" x2="104" y2="138" stroke="#1A1814" stroke-width="6" stroke-linecap="round"/>' +
+    /* braccio: spalla -> gomito -> volante */
+    '<line x1="93" y1="76" x2="138" y2="96" stroke="#1A1814" stroke-width="4" stroke-linecap="round"/>' +
+    '<line x1="138" y1="96" x2="196" y2="86" stroke="#1A1814" stroke-width="4" stroke-linecap="round"/>' +
+    /* mano sul volante */
+    '<circle cx="196" cy="86" r="5" fill="#E8E1D5" stroke="#1A1814" stroke-width="1.5"/>' +
+    /* coscia: bacino -> ginocchio */
+    '<line x1="104" y1="138" x2="178" y2="146" stroke="#1A1814" stroke-width="6" stroke-linecap="round"/>' +
+    /* stinco: ginocchio -> caviglia */
+    '<line x1="178" y1="146" x2="208" y2="182" stroke="#1A1814" stroke-width="5" stroke-linecap="round"/>' +
+    /* piede sul pedale */
+    '<line x1="208" y1="182" x2="232" y2="176" stroke="#1A1814" stroke-width="5" stroke-linecap="round"/>' +
+    /* ---- Volante ---- */
+    '<circle cx="205" cy="78" r="20" fill="none" stroke="#C0392B" stroke-width="3.5"/>' +
+    '<line x1="185" y1="78" x2="225" y2="78" stroke="#C0392B" stroke-width="2"/>' +
+    '<line x1="205" y1="58" x2="205" y2="98" stroke="#C0392B" stroke-width="2"/>' +
+    '<circle cx="205" cy="78" r="4" fill="#C0392B"/>' +
+    /* ---- Pedaliera ---- */
+    '<path d="M 228 168 L 250 158 L 256 168 L 234 180 Z" fill="#D4CCB8" stroke="#8B6F47" stroke-width="1.5" stroke-linejoin="round"/>' +
+    /* ---- Arco angolo schiena (busto vs coscia) ~105° ---- */
+    '<path d="M 99 116 A 22 22 0 0 1 122 132" fill="none" stroke="#C0392B" stroke-width="1.5" stroke-dasharray="3 2"/>' +
+    '<text x="110" y="112" font-size="10" font-family="monospace" fill="#C0392B" font-weight="bold">105°</text>' +
+    /* ---- Arco angolo ginocchio ~120° ---- */
+    '<path d="M 168 148 A 18 18 0 0 1 185 160" fill="none" stroke="#8B6F47" stroke-width="1.5" stroke-dasharray="3 2"/>' +
+    '<text x="150" y="170" font-size="10" font-family="monospace" fill="#8B6F47" font-weight="bold">120°</text>' +
     '</svg>';
 
   var HANDS_SVG =
@@ -83,6 +95,35 @@
     /* Labels */
     '<text x="100" y="20" text-anchor="middle" font-size="9" font-family="monospace" fill="#6B6359">12</text>' +
     '<text x="100" y="188" text-anchor="middle" font-size="9" font-family="monospace" fill="#6B6359">6</text>' +
+    '</svg>';
+
+  var MONITOR_TIPS = [
+    { t: '32" curvo = schermo di guida', d: 'È il primario. Centralo rispetto a volante e sedile (non alla scrivania), col centro dello schermo all\'altezza degli occhi. Distanza occhi–schermo ~60–80 cm.' },
+    { t: '24" flat = secondario laterale', d: 'Mettilo di lato (sinistra consigliata), inclinato verso di te. Non per la guida ma per telemetria/overlay (MoTeC, Content Manager, AC Drive), tempi, CrewChief, Discord.' },
+    { t: 'Curvatura simmetrica', d: 'Orienta il curvo in modo che i due lati siano equidistanti dagli occhi: è il suo punto di forza, va centrato bene.' },
+    { t: 'Bracci pneumatici', d: 'Hai i due bracci a pinza sulla scrivania: avvicina il cockpit finché, seduto in guida, il centro del 32" è davanti agli occhi. Inclina leggermente il 32" verso il basso per ridurre riflessi.' },
+    { t: 'Stabilità', d: 'Con il DD a 8 Nm le vibrazioni arrivano alla scrivania: blocca bene le pinze o l\'immagine "balla".' },
+    { t: 'FOV (campo visivo)', d: 'Con monitor singolo di guida non esagerare col FOV. Usa un calcolatore FOV (diagonale 32" + distanza) e regola in AC finché le mani virtuali coincidono con le tue sul volante.' },
+    { t: 'Schermo di gara unico', d: 'In gioco imposta SOLO il 32" come display di gara; il 24" resta "secondo monitor" di Windows per le app di supporto.' }
+  ];
+
+  /* Schema disposizione monitor */
+  var MONITOR_SVG =
+    '<svg class="svg-diagram" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg" style="max-width:320px;">' +
+    /* 32 curvo centrale */
+    '<path d="M 110 30 Q 200 18 290 30 L 285 92 Q 200 80 115 92 Z" fill="#D4CCB8" stroke="#C0392B" stroke-width="2" stroke-linejoin="round"/>' +
+    '<text x="200" y="64" text-anchor="middle" font-size="11" font-family="monospace" fill="#1A1814" font-weight="bold">32" CURVO</text>' +
+    '<text x="200" y="78" text-anchor="middle" font-size="8" font-family="monospace" fill="#6B6359">guida</text>' +
+    /* 24 flat laterale sinistro, angolato */
+    '<path d="M 20 50 L 92 38 L 92 96 L 20 108 Z" fill="#D4CCB8" stroke="#8B6F47" stroke-width="1.5" stroke-linejoin="round"/>' +
+    '<text x="56" y="70" text-anchor="middle" font-size="9" font-family="monospace" fill="#1A1814" font-weight="bold">24"</text>' +
+    '<text x="56" y="83" text-anchor="middle" font-size="7" font-family="monospace" fill="#6B6359">telemetria</text>' +
+    /* Pilota / sedile */
+    '<circle cx="200" cy="150" r="12" fill="#E8E1D5" stroke="#1A1814" stroke-width="1.5"/>' +
+    '<path d="M 188 168 Q 200 156 212 168" fill="none" stroke="#1A1814" stroke-width="2"/>' +
+    /* Linee di vista */
+    '<line x1="200" y1="140" x2="200" y2="92" stroke="#C0392B" stroke-width="1" stroke-dasharray="3 2"/>' +
+    '<line x1="200" y1="140" x2="60" y2="100" stroke="#8B6F47" stroke-width="1" stroke-dasharray="3 2"/>' +
     '</svg>';
 
   function computeProgress(checks) {
@@ -131,6 +172,21 @@
           }).join('') +
           '</tbody>' +
         '</table>' +
+      '</div>' +
+
+      /* Setup monitor */
+      '<h2 class="mb-2">Setup monitor (32" curvo + 24" flat)</h2>' +
+      '<div style="display:flex;flex-wrap:wrap;gap:1.5rem;align-items:flex-start;margin-bottom:1.5rem;">' +
+        '<figure class="diagram-wrap" style="flex:0 0 auto;">' + MONITOR_SVG +
+          '<figcaption>32" curvo centrale per la guida, 24" flat di lato</figcaption></figure>' +
+        '<div style="flex:1;min-width:240px;">' +
+          '<div id="monitor-accordion">' +
+          MONITOR_TIPS.map(function (m) {
+            return '<details><summary>' + m.t + '</summary>' +
+              '<div class="details-body"><p>' + m.d + '</p></div></details>';
+          }).join('') +
+          '</div>' +
+        '</div>' +
       '</div>' +
 
       /* Checklist */

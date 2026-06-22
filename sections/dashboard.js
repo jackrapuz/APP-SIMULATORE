@@ -139,7 +139,7 @@
     var setups   = nb.setups  || [];
 
     var lastSession = sessions.length
-      ? sessions[sessions.length - 1].data || sessions[sessions.length - 1].date || '—'
+      ? sessions[sessions.length - 1].date || '—'
       : '—';
 
     container.innerHTML =
