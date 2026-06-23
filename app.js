@@ -11,6 +11,8 @@
     try {
       localStorage.setItem('simracing_' + key, JSON.stringify(val));
     } catch (e) { /* storage full or private mode */ }
+    /* Quando cambia il profilo, aggiorna l'intestazione sidebar (avatar + tag). */
+    if (key === 'profile') renderBrand();
   }
 
   function load(key, def) {
@@ -174,6 +176,49 @@
     return Math.round(sum / total);
   }
 
+  /* ---------- Sidebar brand (avatar + tag pilota) ----------
+     Personalizza l'intestazione della sidebar col profilo: foto avatar se
+     presente, altrimenti iniziali su sfondo colorato (stessa logica di
+     profilo.js), altrimenti l'esagono di default. Aggiornato in tempo reale
+     da save() ad ogni modifica del profilo. */
+  function brandTagColor(tag) {
+    var s = (tag || 'PILOTA').toUpperCase();
+    var h = 0;
+    for (var i = 0; i < s.length; i++) { h = (h * 31 + s.charCodeAt(i)) % 360; }
+    return 'hsl(' + h + ', 55%, 42%)';
+  }
+
+  function brandInitials(tag) {
+    var s = (tag || '').trim();
+    if (!s) return '?';
+    var parts = s.split(/[\s_\-]+/).filter(Boolean);
+    if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+    return s.slice(0, 2).toUpperCase();
+  }
+
+  function renderBrand() {
+    var mark = document.getElementById('brand-mark');
+    var name = document.getElementById('brand-name');
+    if (!mark || !name) return;
+    var p = load('profile', null);
+    var id = (p && p.identity) || {};
+    var tag = (id.tag || '').trim();
+
+    mark.style.background = '';
+    if (id.avatar) {
+      mark.className = 'brand-mark has-img';
+      mark.innerHTML = '<img src="' + id.avatar + '" alt="">';
+    } else if (tag) {
+      mark.className = 'brand-mark has-initials';
+      mark.style.background = brandTagColor(tag);
+      mark.textContent = brandInitials(tag);
+    } else {
+      mark.className = 'brand-mark';
+      mark.textContent = '⬡';
+    }
+    name.textContent = tag ? tag.toUpperCase() : 'PILOTA';
+  }
+
   /* ---------- Sidebar progress ---------- */
 
   function renderSidebarProgress() {
@@ -283,6 +328,7 @@
 
   window.addEventListener('DOMContentLoaded', function () {
     buildNav();
+    renderBrand();
     renderSidebarProgress();
 
     var initialId = location.hash.slice(1) || 'profilo';

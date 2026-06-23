@@ -109,15 +109,48 @@ body {
 .sidebar-brand {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.625rem;
   padding: 1.5rem 1.25rem 1rem;
   border-bottom: 1px solid var(--border);
+  text-decoration: none;
+  transition: background var(--transition);
 }
+
+.sidebar-brand:hover { background: rgba(255,180,84,0.06); }
 
 .brand-mark {
   color: var(--signal);
   font-size: 1.4rem;
   line-height: 1;
+  flex-shrink: 0;
+}
+
+/* Avatar foto o iniziali al posto dell'esagono */
+.brand-mark.has-img,
+.brand-mark.has-initials {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  box-shadow: var(--glow-signal);
+}
+
+.brand-mark.has-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.brand-mark.has-initials {
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
 }
 
 .brand-name {
