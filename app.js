@@ -44,13 +44,56 @@
     }
   }
 
+  /* ---------- markComplete (sezioni di sola lettura) ---------- */
+
+  function markComplete(sectionId, done) {
+    updateProgress(sectionId, done ? 100 : 0);
+  }
+
+  /* Genera la barra "Segna come completata" riusabile.
+     Restituisce una stringa HTML; gli eventi vanno collegati con bindCompletionBar. */
+  function completionBarHTML(sectionId) {
+    var done = (STATE.progress[sectionId] || 0) >= 100;
+    return '<div class="completion-bar' + (done ? ' is-done' : '') + '" data-section="' + sectionId + '">' +
+      '<span class="completion-text">' +
+        (done ? '✓ Sezione completata' : 'Hai letto tutto? Segna questa sezione come completata.') +
+      '</span>' +
+      '<button class="btn' + (done ? ' btn-ghost' : '') + '" data-complete-btn>' +
+        (done ? 'Annulla' : 'Segna come completata ✓') +
+      '</button>' +
+    '</div>';
+  }
+
+  function bindCompletionBar(container, sectionId) {
+    var bar = container.querySelector('.completion-bar[data-section="' + sectionId + '"]');
+    if (!bar) return;
+    var btn = bar.querySelector('[data-complete-btn]');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      var done = (STATE.progress[sectionId] || 0) >= 100;
+      markComplete(sectionId, !done);
+      /* Aggiorna la barra in-place senza re-render della sezione */
+      var nowDone = !done;
+      bar.classList.toggle('is-done', nowDone);
+      bar.querySelector('.completion-text').textContent = nowDone
+        ? '✓ Sezione completata'
+        : 'Hai letto tutto? Segna questa sezione come completata.';
+      btn.textContent = nowDone ? 'Annulla' : 'Segna come completata ✓';
+      btn.classList.toggle('btn-ghost', nowDone);
+    });
+  }
+
   /* ---------- Calcolo % globale ---------- */
 
   function globalPct() {
     var sections = (window.SimRacing && window.SimRacing.sections) || [];
-    var total = sections.length;
+    /* Escludi dashboard e quaderno (utility) dal calcolo del progresso. */
+    var tracked = sections.filter(function (s) {
+      return s.id !== 'dashboard' && s.id !== 'quaderno';
+    });
+    var total = tracked.length;
     if (total === 0) return 0;
-    var sum = sections.reduce(function (acc, s) {
+    var sum = tracked.reduce(function (acc, s) {
       return acc + (STATE.progress[s.id] || 0);
     }, 0);
     return Math.round(sum / total);
@@ -106,8 +149,23 @@
     if (!main) return;
     main.innerHTML = '';
 
-    var utils = { save: save, load: load, updateProgress: updateProgress, globalPct: globalPct, STATE: STATE };
+    var utils = {
+      save: save,
+      load: load,
+      updateProgress: updateProgress,
+      markComplete: markComplete,
+      completionBarHTML: completionBarHTML,
+      bindCompletionBar: bindCompletionBar,
+      globalPct: globalPct,
+      STATE: STATE
+    };
     section.render(main, STATE, utils);
+
+    /* Transizione di sezione discreta */
+    main.classList.remove('section-fade');
+    /* reflow per ri-triggerare l'animazione */
+    void main.offsetWidth;
+    main.classList.add('section-fade');
 
     /* Scroll top */
     main.scrollTop = 0;

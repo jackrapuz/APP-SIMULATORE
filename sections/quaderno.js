@@ -194,11 +194,12 @@
           '</div>'
       ) +
 
-      /* Export */
+      /* Export / gestione dati */
       '<div class="section-divider"></div>' +
-      '<div style="display:flex;gap:1rem;align-items:center;">' +
+      '<div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap;">' +
         '<button class="btn btn-ghost" id="export-btn">Esporta tutto (JSON)</button>' +
-        '<span class="text-muted text-xs">Scarica tutti i dati del Quaderno</span>' +
+        '<button class="btn btn-ghost" id="reset-progress-btn">Reset progresso</button>' +
+        '<span class="text-muted text-xs">Esporta i dati o azzera solo il progresso delle sezioni (il Quaderno resta).</span>' +
       '</div>';
 
     area.querySelector('#setup-form').addEventListener('submit', function (ev) {
@@ -238,6 +239,14 @@
         utils.save('notebook', nb);
         renderSetups(nb, container, utils);
       });
+    });
+
+    area.querySelector('#reset-progress-btn').addEventListener('click', function () {
+      if (!window.confirm('Azzerare il progresso di tutte le sezioni? Il Quaderno (note, sessioni, setup) NON verrà toccato.')) return;
+      utils.STATE.progress = {};
+      utils.save('progress', {});
+      /* Aggiorna sidebar e dashboard tramite l'hook esistente */
+      utils.updateProgress('quaderno', 0);
     });
 
     area.querySelector('#export-btn').addEventListener('click', function () {

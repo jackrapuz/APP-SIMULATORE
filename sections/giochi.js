@@ -184,7 +184,9 @@
       }).join('') +
       '</div>' +
 
-      '<div id="game-content">' + renderTabContent(keys[0]) + '</div>';
+      '<div id="game-content">' + renderTabContent(keys[0]) + '</div>' +
+
+      utils.completionBarHTML('giochi');
 
     container.querySelectorAll('.tab-btn').forEach(function (btn) {
       btn.addEventListener('click', function () {
@@ -194,7 +196,7 @@
       });
     });
 
-    utils.updateProgress('giochi', 10);
+    utils.bindCompletionBar(container, 'giochi');
   }
 
   window.SimRacing.sections.push({

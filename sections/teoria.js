@@ -169,9 +169,11 @@
           }).join('') +
           '</tbody>' +
         '</table>' +
-      '</div>';
+      '</div>' +
 
-    utils.updateProgress('teoria', 10);
+      utils.completionBarHTML('teoria');
+
+    utils.bindCompletionBar(container, 'teoria');
   }
 
   window.SimRacing.sections.push({

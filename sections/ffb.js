@@ -197,7 +197,9 @@
           '</div>' +
         '</details>';
       }).join('') +
-      '</div>';
+      '</div>' +
+
+      utils.completionBarHTML('ffb');
 
     /* Render first tab */
     renderTab(Object.keys(PROFILES)[0]);
@@ -240,7 +242,7 @@
       });
     }
 
-    utils.updateProgress('ffb', 10);
+    utils.bindCompletionBar(container, 'ffb');
   }
 
   function flashCopied(btn) {

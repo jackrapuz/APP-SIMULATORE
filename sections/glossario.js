@@ -100,7 +100,9 @@
         '<input type="text" id="glossary-input" placeholder="Cerca un termine... (es. FFB, oversteer, apex)" autocomplete="off">' +
       '</div>' +
 
-      '<div id="glossary-results">' + renderResults(GLOSSARY, '') + '</div>';
+      '<div id="glossary-results">' + renderResults(GLOSSARY, '') + '</div>' +
+
+      utils.completionBarHTML('glossario');
 
     var input = document.getElementById('glossary-input');
     var resultsEl = document.getElementById('glossary-results');
@@ -118,7 +120,7 @@
     });
 
     input.focus();
-    utils.updateProgress('glossario', 10);
+    utils.bindCompletionBar(container, 'glossario');
   }
 
   window.SimRacing.sections.push({

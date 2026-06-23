@@ -195,9 +195,11 @@
 
       '<div class="callout callout-red">' +
         '<strong>Nei sim:</strong> Se l\'auto ha assistenza auto-blip (es. iRacing F3) puoi disabilitarla e praticare il heel-toe manuale. In ACC è simulato bene nelle GT.' +
-      '</div>';
+      '</div>' +
 
-    utils.updateProgress('cambio', 10);
+      utils.completionBarHTML('cambio');
+
+    utils.bindCompletionBar(container, 'cambio');
   }
 
   window.SimRacing.sections.push({

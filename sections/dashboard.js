@@ -124,9 +124,13 @@
   };
 
   function computeGlobalPct(state, sections) {
-    if (!sections.length) return 0;
-    var sum = sections.reduce(function (acc, s) { return acc + (state.progress[s.id] || 0); }, 0);
-    return Math.round(sum / sections.length);
+    /* Coerente con globalPct() in app.js: escludi dashboard e quaderno. */
+    var tracked = sections.filter(function (s) {
+      return s.id !== 'dashboard' && s.id !== 'quaderno';
+    });
+    if (!tracked.length) return 0;
+    var sum = tracked.reduce(function (acc, s) { return acc + (state.progress[s.id] || 0); }, 0);
+    return Math.round(sum / tracked.length);
   }
 
   /* ---------- Render ---------- */
