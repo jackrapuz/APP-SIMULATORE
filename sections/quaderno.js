@@ -81,10 +81,20 @@
     });
   }
 
+  var SESSION_CAP = 5;   // limite sessioni in FREE
+  var SETUP_CAP = 3;     // limite setup salvati in FREE
+
   function renderSessionLog(nb, container, utils) {
     var sessions = nb.sessions || [];
     var area = container.querySelector('#tab-content');
     if (!area) return;
+    var pro = utils.isPro();
+    var atCap = !pro && sessions.length >= SESSION_CAP;
+    /* In FREE mostriamo solo le sessioni più recenti entro il cap. */
+    var visible = (pro || sessions.length <= SESSION_CAP)
+      ? sessions.slice().reverse()
+      : sessions.slice(-SESSION_CAP).reverse();
+    var hidden = sessions.length - visible.length;
 
     area.innerHTML =
       '<h3 class="mb-2">Nuova sessione</h3>' +
@@ -97,9 +107,11 @@
             '<div class="form-field"><label>Best Lap</label><input type="text" id="sess-lap" placeholder="1:48.234"></div>' +
           '</div>' +
           '<div class="form-field"><label>Note</label><textarea id="sess-note" placeholder="Cosa ho imparato, problemi incontrati..."></textarea></div>' +
-          '<button type="submit" class="btn">Salva sessione</button>' +
+          '<button type="submit" class="btn"' + (atCap ? ' disabled' : '') + '>Salva sessione</button>' +
         '</form>' +
       '</div>' +
+
+      (atCap ? utils.paywallCardHTML('Hai raggiunto il limite di ' + SESSION_CAP + ' sessioni della versione FREE. Passa a PRO per un log sessioni illimitato.') : '') +
 
       '<h3 class="mb-2">Storico sessioni</h3>' +
       (sessions.length === 0
@@ -108,8 +120,8 @@
           '<table class="data-table">' +
             '<thead><tr><th>Data</th><th>Pista</th><th>Auto</th><th>Best Lap</th><th>Note</th><th></th></tr></thead>' +
             '<tbody>' +
-            sessions.slice().reverse().map(function (s, i) {
-              var realI = sessions.length - 1 - i;
+            visible.map(function (s, i) {
+              var realI = sessions.indexOf(s);
               return '<tr>' +
                 '<td><span class="mono">' + fmtDate(s.date) + '</span></td>' +
                 '<td>' + escapeHtml(s.track || '—') + '</td>' +
@@ -122,10 +134,15 @@
             '</tbody>' +
           '</table>' +
         '</div>'
-      );
+      ) +
+      (hidden > 0 ? utils.paywallCardHTML('Altre ' + hidden + ' sessioni più vecchie sono nascoste nella versione FREE. Sblocca lo storico completo con PRO.') : '');
 
     area.querySelector('#sess-form').addEventListener('submit', function (ev) {
       ev.preventDefault();
+      if (!pro && (nb.sessions || []).length >= SESSION_CAP) {
+        utils.showPaywallModal('La versione FREE salva fino a ' + SESSION_CAP + ' sessioni. Passa a PRO per un log illimitato.');
+        return;
+      }
       var entry = {
         date:  area.querySelector('#sess-date').value,
         track: area.querySelector('#sess-track').value.trim(),
@@ -155,6 +172,12 @@
     var setups = nb.setups || [];
     var area = container.querySelector('#tab-content');
     if (!area) return;
+    var pro = utils.isPro();
+    var atCap = !pro && setups.length >= SETUP_CAP;
+    var visible = (pro || setups.length <= SETUP_CAP)
+      ? setups.slice().reverse()
+      : setups.slice(-SETUP_CAP).reverse();
+    var hidden = setups.length - visible.length;
 
     area.innerHTML =
       '<h3 class="mb-2">Salva nuovo setup</h3>' +
@@ -166,16 +189,18 @@
             '<div class="form-field"><label>Pista</label><input type="text" id="sp-track" placeholder="Monza"></div>' +
           '</div>' +
           '<div class="form-field"><label>Valori / Note (JSON o testo libero)</label><textarea id="sp-values" placeholder=\'{"camber_ant": -3.0, "pressioni": 27.0, "BB": 56, "FF": 70}\'style="font-family:var(--font-mono);font-size:var(--text-xs);min-height:6rem;"></textarea></div>' +
-          '<button type="submit" class="btn">Salva setup</button>' +
+          '<button type="submit" class="btn"' + (atCap ? ' disabled' : '') + '>Salva setup</button>' +
         '</form>' +
       '</div>' +
+
+      (atCap ? utils.paywallCardHTML('La versione FREE salva fino a ' + SETUP_CAP + ' setup. Passa a PRO per setup illimitati.') : '') +
 
       '<h3 class="mb-2">Setup salvati</h3>' +
       (setups.length === 0
         ? '<div class="empty-state"><div class="empty-state-icon">⚙</div><p>Nessun setup salvato</p></div>'
         : '<div class="entry-list">' +
-          setups.slice().reverse().map(function (s, i) {
-            var realI = setups.length - 1 - i;
+          visible.map(function (s, i) {
+            var realI = setups.indexOf(s);
             return '<div class="entry-card">' +
               '<div class="entry-card-header">' +
                 '<div>' +
@@ -193,6 +218,14 @@
           }).join('') +
           '</div>'
       ) +
+      (hidden > 0 ? utils.paywallCardHTML('Altri ' + hidden + ' setup sono nascosti nella versione FREE. Sblocca lo storico completo con PRO.') : '') +
+
+      /* Strumenti PRO: confronto setup e export PDF */
+      '<div class="section-divider"></div>' +
+      '<div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;">' +
+        '<button class="btn btn-ghost' + (pro ? '' : ' locked') + '" id="compare-btn">Confronta setup' + (pro ? '' : ' <span class="paywall-badge">PRO</span>') + '</button>' +
+        '<button class="btn btn-ghost' + (pro ? '' : ' locked') + '" id="pdf-btn">Export PDF' + (pro ? '' : ' <span class="paywall-badge">PRO</span>') + '</button>' +
+      '</div>' +
 
       /* Export / gestione dati */
       '<div class="section-divider"></div>' +
@@ -205,6 +238,10 @@
 
     area.querySelector('#setup-form').addEventListener('submit', function (ev) {
       ev.preventDefault();
+      if (!pro && (nb.setups || []).length >= SETUP_CAP) {
+        utils.showPaywallModal('La versione FREE salva fino a ' + SETUP_CAP + ' setup. Passa a PRO per setup illimitati.');
+        return;
+      }
       var entry = {
         name:   area.querySelector('#sp-name').value.trim(),
         car:    area.querySelector('#sp-car').value.trim(),
@@ -239,6 +276,19 @@
         nb.setups.splice(idx, 1);
         utils.save('notebook', nb);
         renderSetups(nb, container, utils);
+      });
+    });
+
+    /* Strumenti PRO (gating infrastrutturale; la funzione vera è follow-up). */
+    ['compare-btn', 'pdf-btn'].forEach(function (id) {
+      var b = area.querySelector('#' + id);
+      if (!b) return;
+      b.addEventListener('click', function () {
+        if (!pro) {
+          utils.showPaywallModal('Confronto setup ed export PDF sono funzioni PRO.');
+        } else {
+          utils.showPaywallModal('Funzione in arrivo in una prossima build PRO.');
+        }
       });
     });
 
