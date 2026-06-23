@@ -128,43 +128,8 @@
     if (nextEl) nextEl.innerHTML = buildNextActivity(state, sections);
   };
 
-  /* ---------- Streak / attività recente ----------
-     Le sessioni salvano date "YYYY-MM-DD" (vedi quaderno.js). Calcola la
-     serie di giorni consecutivi con almeno una sessione (che termina oggi o
-     ieri) e il numero di sessioni negli ultimi 7 giorni. */
-  function dayDiff(aStr, bStr) {
-    var a = new Date(aStr + 'T00:00:00');
-    var b = new Date(bStr + 'T00:00:00');
-    return Math.round((a - b) / 86400000);
-  }
-
-  function computeActivity(sessions) {
-    var dates = {};
-    (sessions || []).forEach(function (s) { if (s && s.date) dates[s.date] = true; });
-    var unique = Object.keys(dates).sort();           // ascendente
-    var today = new Date().toISOString().slice(0, 10);
-
-    var last7 = unique.filter(function (d) {
-      var diff = dayDiff(today, d);
-      return diff >= 0 && diff < 7;
-    }).length;
-
-    /* Streak: parti da oggi (o ieri) e conta a ritroso i giorni consecutivi. */
-    var streak = 0;
-    if (unique.length) {
-      var newest = unique[unique.length - 1];
-      var gapFromToday = dayDiff(today, newest);
-      if (gapFromToday <= 1) {
-        var cursor = newest;
-        streak = 1;
-        for (var i = unique.length - 2; i >= 0; i--) {
-          if (dayDiff(cursor, unique[i]) === 1) { streak++; cursor = unique[i]; }
-          else break;
-        }
-      }
-    }
-    return { streak: streak, last7: last7 };
-  }
+  /* Streak / attività recente: la logica vive in app.js ed è esposta via
+     utils.computeActivity (vedi render). Niente copia locale. */
 
   function computeGlobalPct(state, sections) {
     /* Coerente con globalPct() in app.js: escludi dashboard e quaderno. */
@@ -189,7 +154,7 @@
       ? sessions[sessions.length - 1].date || '—'
       : '—';
 
-    var activity = computeActivity(sessions);
+    var activity = utils.computeActivity(sessions);
     var streakText = activity.streak > 0
       ? '<span class="streak-flame">🔥</span>' + activity.streak + (activity.streak === 1 ? ' giorno' : ' giorni')
       : '—';
