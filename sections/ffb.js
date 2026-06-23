@@ -221,7 +221,7 @@
         '<p class="text-muted text-sm mb-2">' + p.note + '</p>' +
         '<div class="code-wrap">' +
           '<pre class="code-block">' + escapeHtml(p.lines) + '</pre>' +
-          '<button class="code-copy-btn" data-content="' + escapeAttr(p.lines) + '">Copia</button>' +
+          '<button class="code-copy-btn" data-content="' + escapeAttr(p.lines) + '" aria-label="Copia configurazione negli appunti">Copia</button>' +
         '</div>';
 
       content.querySelector('.code-copy-btn').addEventListener('click', function () {

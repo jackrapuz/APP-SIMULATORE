@@ -162,60 +162,60 @@
 
   var SIDE_SVG =
     '<svg class="svg-diagram" viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg" style="max-width:300px;">' +
-    '<line x1="20" y1="200" x2="285" y2="200" stroke="#8B6F47" stroke-width="1" opacity="0.4"/>' +
-    '<path d="M 70 150 L 150 150 Q 158 150 158 142 L 150 132 L 72 134 Q 64 136 64 144 Z" fill="#D4CCB8" stroke="#8B6F47" stroke-width="1.5" stroke-linejoin="round"/>' +
-    '<path d="M 64 144 L 52 60 Q 51 50 61 49 L 78 52 Q 86 54 86 64 L 88 140 Z" fill="#D4CCB8" stroke="#8B6F47" stroke-width="1.5" stroke-linejoin="round"/>' +
-    '<path d="M 52 60 Q 44 70 46 110" fill="none" stroke="#8B6F47" stroke-width="1.5" opacity="0.7"/>' +
-    '<rect x="50" y="36" width="20" height="20" rx="5" fill="#D4CCB8" stroke="#8B6F47" stroke-width="1.5"/>' +
-    '<circle cx="86" cy="46" r="13" fill="#E8E1D5" stroke="#1A1814" stroke-width="1.8"/>' +
-    '<line x1="86" y1="59" x2="90" y2="68" stroke="#1A1814" stroke-width="3" stroke-linecap="round"/>' +
-    '<line x1="90" y1="68" x2="104" y2="138" stroke="#1A1814" stroke-width="6" stroke-linecap="round"/>' +
-    '<line x1="93" y1="76" x2="138" y2="96" stroke="#1A1814" stroke-width="4" stroke-linecap="round"/>' +
-    '<line x1="138" y1="96" x2="196" y2="86" stroke="#1A1814" stroke-width="4" stroke-linecap="round"/>' +
-    '<circle cx="196" cy="86" r="5" fill="#E8E1D5" stroke="#1A1814" stroke-width="1.5"/>' +
-    '<line x1="104" y1="138" x2="178" y2="146" stroke="#1A1814" stroke-width="6" stroke-linecap="round"/>' +
-    '<line x1="178" y1="146" x2="208" y2="182" stroke="#1A1814" stroke-width="5" stroke-linecap="round"/>' +
-    '<line x1="208" y1="182" x2="232" y2="176" stroke="#1A1814" stroke-width="5" stroke-linecap="round"/>' +
-    '<circle cx="205" cy="78" r="20" fill="none" stroke="#C0392B" stroke-width="3.5"/>' +
-    '<line x1="185" y1="78" x2="225" y2="78" stroke="#C0392B" stroke-width="2"/>' +
-    '<line x1="205" y1="58" x2="205" y2="98" stroke="#C0392B" stroke-width="2"/>' +
-    '<circle cx="205" cy="78" r="4" fill="#C0392B"/>' +
-    '<path d="M 228 168 L 250 158 L 256 168 L 234 180 Z" fill="#D4CCB8" stroke="#8B6F47" stroke-width="1.5" stroke-linejoin="round"/>' +
-    '<path d="M 99 116 A 22 22 0 0 1 122 132" fill="none" stroke="#C0392B" stroke-width="1.5" stroke-dasharray="3 2"/>' +
-    '<text x="110" y="112" font-size="10" font-family="monospace" fill="#C0392B" font-weight="bold">105°</text>' +
-    '<path d="M 168 148 A 18 18 0 0 1 185 160" fill="none" stroke="#8B6F47" stroke-width="1.5" stroke-dasharray="3 2"/>' +
-    '<text x="150" y="170" font-size="10" font-family="monospace" fill="#8B6F47" font-weight="bold">120°</text>' +
+    '<line x1="20" y1="200" x2="285" y2="200" stroke="#4FD1C5" stroke-width="1" opacity="0.4"/>' +
+    '<path d="M 70 150 L 150 150 Q 158 150 158 142 L 150 132 L 72 134 Q 64 136 64 144 Z" fill="#212834" stroke="#4FD1C5" stroke-width="1.5" stroke-linejoin="round"/>' +
+    '<path d="M 64 144 L 52 60 Q 51 50 61 49 L 78 52 Q 86 54 86 64 L 88 140 Z" fill="#212834" stroke="#4FD1C5" stroke-width="1.5" stroke-linejoin="round"/>' +
+    '<path d="M 52 60 Q 44 70 46 110" fill="none" stroke="#4FD1C5" stroke-width="1.5" opacity="0.7"/>' +
+    '<rect x="50" y="36" width="20" height="20" rx="5" fill="#212834" stroke="#4FD1C5" stroke-width="1.5"/>' +
+    '<circle cx="86" cy="46" r="13" fill="#161B22" stroke="#E7EAF0" stroke-width="1.8"/>' +
+    '<line x1="86" y1="59" x2="90" y2="68" stroke="#E7EAF0" stroke-width="3" stroke-linecap="round"/>' +
+    '<line x1="90" y1="68" x2="104" y2="138" stroke="#E7EAF0" stroke-width="6" stroke-linecap="round"/>' +
+    '<line x1="93" y1="76" x2="138" y2="96" stroke="#E7EAF0" stroke-width="4" stroke-linecap="round"/>' +
+    '<line x1="138" y1="96" x2="196" y2="86" stroke="#E7EAF0" stroke-width="4" stroke-linecap="round"/>' +
+    '<circle cx="196" cy="86" r="5" fill="#161B22" stroke="#E7EAF0" stroke-width="1.5"/>' +
+    '<line x1="104" y1="138" x2="178" y2="146" stroke="#E7EAF0" stroke-width="6" stroke-linecap="round"/>' +
+    '<line x1="178" y1="146" x2="208" y2="182" stroke="#E7EAF0" stroke-width="5" stroke-linecap="round"/>' +
+    '<line x1="208" y1="182" x2="232" y2="176" stroke="#E7EAF0" stroke-width="5" stroke-linecap="round"/>' +
+    '<circle cx="205" cy="78" r="20" fill="none" stroke="#FFB454" stroke-width="3.5"/>' +
+    '<line x1="185" y1="78" x2="225" y2="78" stroke="#FFB454" stroke-width="2"/>' +
+    '<line x1="205" y1="58" x2="205" y2="98" stroke="#FFB454" stroke-width="2"/>' +
+    '<circle cx="205" cy="78" r="4" fill="#FFB454"/>' +
+    '<path d="M 228 168 L 250 158 L 256 168 L 234 180 Z" fill="#212834" stroke="#4FD1C5" stroke-width="1.5" stroke-linejoin="round"/>' +
+    '<path d="M 99 116 A 22 22 0 0 1 122 132" fill="none" stroke="#FFB454" stroke-width="1.5" stroke-dasharray="3 2"/>' +
+    '<text x="110" y="112" font-size="10" font-family="monospace" fill="#FFB454" font-weight="bold">105°</text>' +
+    '<path d="M 168 148 A 18 18 0 0 1 185 160" fill="none" stroke="#4FD1C5" stroke-width="1.5" stroke-dasharray="3 2"/>' +
+    '<text x="150" y="170" font-size="10" font-family="monospace" fill="#4FD1C5" font-weight="bold">120°</text>' +
     '</svg>';
 
   var HANDS_SVG =
     '<svg class="svg-diagram" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="max-width:200px;">' +
-    '<circle cx="100" cy="100" r="72" fill="none" stroke="#D4CCB8" stroke-width="12"/>' +
-    '<circle cx="100" cy="100" r="72" fill="none" stroke="#1A1814" stroke-width="2"/>' +
-    '<line x1="100" y1="28" x2="100" y2="172" stroke="#1A1814" stroke-width="1.5" opacity="0.3"/>' +
-    '<line x1="28" y1="100" x2="172" y2="100" stroke="#1A1814" stroke-width="1.5" opacity="0.3"/>' +
-    '<circle cx="28" cy="100" r="9" fill="#C0392B"/>' +
+    '<circle cx="100" cy="100" r="72" fill="none" stroke="#212834" stroke-width="12"/>' +
+    '<circle cx="100" cy="100" r="72" fill="none" stroke="#E7EAF0" stroke-width="2"/>' +
+    '<line x1="100" y1="28" x2="100" y2="172" stroke="#E7EAF0" stroke-width="1.5" opacity="0.3"/>' +
+    '<line x1="28" y1="100" x2="172" y2="100" stroke="#E7EAF0" stroke-width="1.5" opacity="0.3"/>' +
+    '<circle cx="28" cy="100" r="9" fill="#FFB454"/>' +
     '<text x="28" y="103" text-anchor="middle" font-size="8" fill="white" font-family="monospace" font-weight="bold">9</text>' +
-    '<circle cx="172" cy="100" r="9" fill="#C0392B"/>' +
+    '<circle cx="172" cy="100" r="9" fill="#FFB454"/>' +
     '<text x="172" y="103" text-anchor="middle" font-size="8" fill="white" font-family="monospace" font-weight="bold">3</text>' +
-    '<ellipse cx="38" cy="108" rx="12" ry="8" fill="#E8E1D5" stroke="#1A1814" stroke-width="1.5" transform="rotate(-30 38 108)"/>' +
-    '<ellipse cx="162" cy="108" rx="12" ry="8" fill="#E8E1D5" stroke="#1A1814" stroke-width="1.5" transform="rotate(30 162 108)"/>' +
-    '<circle cx="100" cy="100" r="10" fill="#1A1814"/>' +
-    '<text x="100" y="20" text-anchor="middle" font-size="9" font-family="monospace" fill="#6B6359">12</text>' +
-    '<text x="100" y="188" text-anchor="middle" font-size="9" font-family="monospace" fill="#6B6359">6</text>' +
+    '<ellipse cx="38" cy="108" rx="12" ry="8" fill="#161B22" stroke="#E7EAF0" stroke-width="1.5" transform="rotate(-30 38 108)"/>' +
+    '<ellipse cx="162" cy="108" rx="12" ry="8" fill="#161B22" stroke="#E7EAF0" stroke-width="1.5" transform="rotate(30 162 108)"/>' +
+    '<circle cx="100" cy="100" r="10" fill="#E7EAF0"/>' +
+    '<text x="100" y="20" text-anchor="middle" font-size="9" font-family="monospace" fill="#8B95A7">12</text>' +
+    '<text x="100" y="188" text-anchor="middle" font-size="9" font-family="monospace" fill="#8B95A7">6</text>' +
     '</svg>';
 
   var MONITOR_SVG =
     '<svg class="svg-diagram" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg" style="max-width:320px;">' +
-    '<path d="M 110 30 Q 200 18 290 30 L 285 92 Q 200 80 115 92 Z" fill="#D4CCB8" stroke="#C0392B" stroke-width="2" stroke-linejoin="round"/>' +
-    '<text x="200" y="64" text-anchor="middle" font-size="11" font-family="monospace" fill="#1A1814" font-weight="bold">32" CURVO</text>' +
-    '<text x="200" y="78" text-anchor="middle" font-size="8" font-family="monospace" fill="#6B6359">guida</text>' +
-    '<path d="M 20 50 L 92 38 L 92 96 L 20 108 Z" fill="#D4CCB8" stroke="#8B6F47" stroke-width="1.5" stroke-linejoin="round"/>' +
-    '<text x="56" y="70" text-anchor="middle" font-size="9" font-family="monospace" fill="#1A1814" font-weight="bold">24"</text>' +
-    '<text x="56" y="83" text-anchor="middle" font-size="7" font-family="monospace" fill="#6B6359">telemetria</text>' +
-    '<circle cx="200" cy="150" r="12" fill="#E8E1D5" stroke="#1A1814" stroke-width="1.5"/>' +
-    '<path d="M 188 168 Q 200 156 212 168" fill="none" stroke="#1A1814" stroke-width="2"/>' +
-    '<line x1="200" y1="140" x2="200" y2="92" stroke="#C0392B" stroke-width="1" stroke-dasharray="3 2"/>' +
-    '<line x1="200" y1="140" x2="60" y2="100" stroke="#8B6F47" stroke-width="1" stroke-dasharray="3 2"/>' +
+    '<path d="M 110 30 Q 200 18 290 30 L 285 92 Q 200 80 115 92 Z" fill="#212834" stroke="#FFB454" stroke-width="2" stroke-linejoin="round"/>' +
+    '<text x="200" y="64" text-anchor="middle" font-size="11" font-family="monospace" fill="#E7EAF0" font-weight="bold">32" CURVO</text>' +
+    '<text x="200" y="78" text-anchor="middle" font-size="8" font-family="monospace" fill="#8B95A7">guida</text>' +
+    '<path d="M 20 50 L 92 38 L 92 96 L 20 108 Z" fill="#212834" stroke="#4FD1C5" stroke-width="1.5" stroke-linejoin="round"/>' +
+    '<text x="56" y="70" text-anchor="middle" font-size="9" font-family="monospace" fill="#E7EAF0" font-weight="bold">24"</text>' +
+    '<text x="56" y="83" text-anchor="middle" font-size="7" font-family="monospace" fill="#8B95A7">telemetria</text>' +
+    '<circle cx="200" cy="150" r="12" fill="#161B22" stroke="#E7EAF0" stroke-width="1.5"/>' +
+    '<path d="M 188 168 Q 200 156 212 168" fill="none" stroke="#E7EAF0" stroke-width="2"/>' +
+    '<line x1="200" y1="140" x2="200" y2="92" stroke="#FFB454" stroke-width="1" stroke-dasharray="3 2"/>' +
+    '<line x1="200" y1="140" x2="60" y2="100" stroke="#4FD1C5" stroke-width="1" stroke-dasharray="3 2"/>' +
     '</svg>';
 
   /* ============================================================
@@ -353,7 +353,9 @@
           '<div class="wizard-dots">' +
           STEPS.map(function (s, i) {
             return '<button class="wizard-dot' + (done[s.id] ? ' done' : '') + (i === current ? ' current' : '') +
-              '" data-goto="' + i + '" title="Passo ' + (i + 1) + ': ' + s.titolo + '"></button>';
+              '" data-goto="' + i + '" title="Passo ' + (i + 1) + ': ' + s.titolo + '"' +
+              ' aria-label="Passo ' + (i + 1) + ': ' + s.titolo + (done[s.id] ? ' (completato)' : '') + '"' +
+              (i === current ? ' aria-current="step"' : '') + '></button>';
           }).join('') +
           '</div>' +
         '</div>';
@@ -390,11 +392,12 @@
             '<input type="number" id="fov-diag" value="' + saved.diag + '" min="15" max="65" step="1"></div>' +
           '<div class="form-field" style="margin:0;"><label>Distanza occhi–schermo (cm)</label>' +
             '<input type="number" id="fov-dist" value="' + saved.dist + '" min="30" max="150" step="1"></div>' +
-          '<div class="fov-result">' +
+          '<div class="fov-result' + (fov === null ? ' is-invalid' : '') + '" id="fov-result">' +
             '<div class="fov-result-value" id="fov-out">' + (fov !== null ? fov + '°' : '—') + '</div>' +
             '<div class="fov-result-label">FOV verticale</div>' +
           '</div>' +
         '</div>' +
+        '<span class="field-error" id="fov-err" role="alert"' + (fov !== null ? ' hidden' : '') + '>Valori fuori range: diagonale 15–65", distanza 30–150 cm.</span>' +
         '<p class="text-muted text-xs mt-1">Inserisci questo valore come FOV verticale in Assetto Corsa, poi verifica che le mani virtuali coincidano con le tue.</p>' +
       '</div>';
     }
@@ -403,13 +406,22 @@
       var diagEl = wizardEl.querySelector('#fov-diag');
       var distEl = wizardEl.querySelector('#fov-dist');
       var outEl = wizardEl.querySelector('#fov-out');
+      var resEl = wizardEl.querySelector('#fov-result');
+      var errEl = wizardEl.querySelector('#fov-err');
       if (!diagEl || !distEl || !outEl) return;
+      function inRange(v, min, max) { return v >= min && v <= max; }
       function recompute() {
         var diag = parseFloat(diagEl.value);
         var dist = parseFloat(distEl.value);
-        var fov = computeFov(diag, dist);
+        var diagOk = inRange(diag, 15, 65);
+        var distOk = inRange(dist, 30, 150);
+        diagEl.classList.toggle('is-invalid', !diagOk);
+        distEl.classList.toggle('is-invalid', !distOk);
+        var fov = (diagOk && distOk) ? computeFov(diag, dist) : null;
         outEl.textContent = fov !== null ? fov + '°' : '—';
-        utils.save('postazione_fov', { diag: diag, dist: dist });
+        if (resEl) resEl.classList.toggle('is-invalid', fov === null);
+        if (errEl) errEl.hidden = (fov !== null);
+        if (fov !== null) utils.save('postazione_fov', { diag: diag, dist: dist });
       }
       diagEl.addEventListener('input', recompute);
       distEl.addEventListener('input', recompute);

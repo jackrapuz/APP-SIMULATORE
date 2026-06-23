@@ -84,7 +84,8 @@
     var dashoffset = ARC_LEN * (1 - pct / 100);
     var needle = needlePath(pct);
 
-    return '<svg class="tacho-svg" viewBox="0 0 220 180" xmlns="http://www.w3.org/2000/svg">' +
+    return '<svg class="tacho-svg" viewBox="0 0 220 180" xmlns="http://www.w3.org/2000/svg"' +
+      ' role="img" aria-label="Progresso complessivo ' + pct + '%, livello ' + levelLabel(pct) + '">' +
       '<path class="tacho-track" d="' + ARC_D + '" />' +
       '<path class="tacho-fill" id="tacho-fill-path" d="' + ARC_D + '"' +
         ' stroke-dasharray="' + ARC_LEN + ' ' + FULL_CIRC + '"' +
@@ -119,9 +120,51 @@
     updateTacho(pct);
     var cardEl = document.getElementById('dash-global-pct');
     if (cardEl) cardEl.textContent = pct + '%';
+    var stripEl = document.getElementById('dash-global-strip');
+    if (stripEl && window.SimRacing.shiftStripHTML) {
+      stripEl.innerHTML = window.SimRacing.shiftStripHTML(pct, { cells: 18 });
+    }
     var nextEl = document.getElementById('dash-next');
     if (nextEl) nextEl.innerHTML = buildNextActivity(state, sections);
   };
+
+  /* ---------- Streak / attività recente ----------
+     Le sessioni salvano date "YYYY-MM-DD" (vedi quaderno.js). Calcola la
+     serie di giorni consecutivi con almeno una sessione (che termina oggi o
+     ieri) e il numero di sessioni negli ultimi 7 giorni. */
+  function dayDiff(aStr, bStr) {
+    var a = new Date(aStr + 'T00:00:00');
+    var b = new Date(bStr + 'T00:00:00');
+    return Math.round((a - b) / 86400000);
+  }
+
+  function computeActivity(sessions) {
+    var dates = {};
+    (sessions || []).forEach(function (s) { if (s && s.date) dates[s.date] = true; });
+    var unique = Object.keys(dates).sort();           // ascendente
+    var today = new Date().toISOString().slice(0, 10);
+
+    var last7 = unique.filter(function (d) {
+      var diff = dayDiff(today, d);
+      return diff >= 0 && diff < 7;
+    }).length;
+
+    /* Streak: parti da oggi (o ieri) e conta a ritroso i giorni consecutivi. */
+    var streak = 0;
+    if (unique.length) {
+      var newest = unique[unique.length - 1];
+      var gapFromToday = dayDiff(today, newest);
+      if (gapFromToday <= 1) {
+        var cursor = newest;
+        streak = 1;
+        for (var i = unique.length - 2; i >= 0; i--) {
+          if (dayDiff(cursor, unique[i]) === 1) { streak++; cursor = unique[i]; }
+          else break;
+        }
+      }
+    }
+    return { streak: streak, last7: last7 };
+  }
 
   function computeGlobalPct(state, sections) {
     /* Coerente con globalPct() in app.js: escludi dashboard e quaderno. */
@@ -146,6 +189,11 @@
       ? sessions[sessions.length - 1].date || '—'
       : '—';
 
+    var activity = computeActivity(sessions);
+    var streakText = activity.streak > 0
+      ? '<span class="streak-flame">🔥</span>' + activity.streak + (activity.streak === 1 ? ' giorno' : ' giorni')
+      : '—';
+
     container.innerHTML =
       '<div class="section-header">' +
         '<h1>Dashboard</h1>' +
@@ -159,14 +207,17 @@
           '<div class="card-title">Progresso Complessivo</div>' +
           '<div class="card-value" id="dash-global-pct">' + pct + '%</div>' +
           '<p class="text-muted text-sm mt-1">Completa le sezioni per avanzare di livello</p>' +
-          '<div class="progress-bar progress-bar-lg mt-2">' +
-            '<div class="progress-fill" style="width:' + pct + '%"></div>' +
-          '</div>' +
+          '<div class="mt-2" id="dash-global-strip">' + utils.shiftStripHTML(pct, { cells: 18 }) + '</div>' +
         '</div>' +
       '</div>' +
 
       /* Stats cards */
       '<div class="cards-grid mb-3">' +
+        '<div class="card streak-card">' +
+          '<div class="card-title">Streak</div>' +
+          '<div class="card-value" style="font-family:var(--font-display);">' + streakText + '</div>' +
+          '<p class="text-muted text-xs mt-1">' + activity.last7 + ' sessioni negli ultimi 7 giorni</p>' +
+        '</div>' +
         '<div class="card">' +
           '<div class="card-title">Sessioni Log</div>' +
           '<div class="card-value">' + sessions.length + '</div>' +
@@ -177,7 +228,7 @@
         '</div>' +
         '<div class="card">' +
           '<div class="card-title">Ultima Sessione</div>' +
-          '<div style="font-family:var(--font-mono);font-size:var(--text-sm);margin-top:0.25rem;color:var(--ink-muted);">' + lastSession + '</div>' +
+          '<div class="mono-data" style="font-size:var(--text-sm);margin-top:0.25rem;color:var(--ink-muted);">' + lastSession + '</div>' +
         '</div>' +
       '</div>' +
 
@@ -219,10 +270,8 @@
         return '<a href="#' + s.id + '" style="text-decoration:none;display:flex;align-items:center;gap:1rem;padding:0.625rem 0;border-bottom:1px solid var(--border);color:var(--ink);">' +
           '<span style="width:1.5rem;text-align:center;font-size:0.9rem;">' + s.icon + '</span>' +
           '<span style="flex:1;font-size:var(--text-sm);font-weight:500;">' + s.label + '</span>' +
-          '<span style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--ink-muted);width:2.5rem;text-align:right;">' + pct + '%</span>' +
-          '<div style="width:80px;" class="progress-bar">' +
-            '<div class="progress-fill" style="width:' + pct + '%"></div>' +
-          '</div>' +
+          '<span class="mono-data" style="font-size:var(--text-xs);color:var(--ink-muted);width:2.5rem;text-align:right;">' + pct + '%</span>' +
+          '<div class="shift-strip sm" style="width:80px;flex:none;">' + window.SimRacing.shiftStripCells(pct, 10) + '</div>' +
         '</a>';
       }).join('') +
     '</div>';

@@ -46,7 +46,7 @@
                 '<span><span class="mono text-red">' + escapeHtml(e.param || '—') + '</span> <span style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--ink-muted);">' + escapeHtml(e.from || '?') + ' → ' + escapeHtml(e.to || '?') + '</span></span>' +
                 '<div style="display:flex;align-items:center;gap:0.75rem;">' +
                   '<span class="entry-date">' + fmtDate(e.date) + '</span>' +
-                  '<button class="entry-delete" data-index="' + realI + '" title="Elimina">✕</button>' +
+                  '<button class="entry-delete" data-index="' + realI + '" title="Elimina" aria-label="Elimina voce">✕</button>' +
                 '</div>' +
               '</div>' +
               (e.note ? '<p class="text-sm text-muted">' + escapeHtml(e.note) + '</p>' : '') +
@@ -185,7 +185,7 @@
                 '</div>' +
                 '<div style="display:flex;gap:0.5rem;">' +
                   '<button class="btn btn-ghost btn-sm setup-copy" data-index="' + realI + '">Copia</button>' +
-                  '<button class="entry-delete" data-index="' + realI + '" title="Elimina">✕</button>' +
+                  '<button class="entry-delete" data-index="' + realI + '" title="Elimina" aria-label="Elimina voce">✕</button>' +
                 '</div>' +
               '</div>' +
               (s.values ? '<pre class="code-block mt-2" style="max-height:120px;overflow-y:auto;font-size:0.7rem;">' + escapeHtml(s.values) + '</pre>' : '') +
@@ -200,6 +200,7 @@
         '<button class="btn btn-ghost" id="export-btn">Esporta tutto (JSON)</button>' +
         '<button class="btn btn-ghost" id="reset-progress-btn">Reset progresso</button>' +
         '<span class="text-muted text-xs">Esporta i dati o azzera solo il progresso delle sezioni (il Quaderno resta).</span>' +
+        '<span class="field-error" id="export-err" role="alert" hidden>Export non riuscito. Riprova o controlla i permessi del browser.</span>' +
       '</div>';
 
     area.querySelector('#setup-form').addEventListener('submit', function (ev) {
@@ -250,14 +251,20 @@
     });
 
     area.querySelector('#export-btn').addEventListener('click', function () {
-      var data = JSON.stringify(nb, null, 2);
-      var blob = new Blob([data], { type: 'application/json' });
-      var url = URL.createObjectURL(blob);
-      var a = document.createElement('a');
-      a.href = url;
-      a.download = 'simracing-quaderno-' + today() + '.json';
-      a.click();
-      URL.revokeObjectURL(url);
+      var errEl = area.querySelector('#export-err');
+      try {
+        var data = JSON.stringify(nb, null, 2);
+        var blob = new Blob([data], { type: 'application/json' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'simracing-quaderno-' + today() + '.json';
+        a.click();
+        URL.revokeObjectURL(url);
+        if (errEl) errEl.hidden = true;
+      } catch (e) {
+        if (errEl) errEl.hidden = false;
+      }
     });
   }
 

@@ -8,53 +8,53 @@
   var TRAJECTORY_SVG =
     '<svg class="svg-diagram" viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" style="max-width:320px;">' +
     /* Pista - bordi */
-    '<path d="M 20 180 Q 80 180 120 120 Q 160 60 240 40 L 300 40" fill="none" stroke="#D4CCB8" stroke-width="30" stroke-linecap="round"/>' +
-    '<path d="M 20 160 Q 75 160 112 103 Q 148 46 236 28 L 300 28" fill="none" stroke="#E8E1D5" stroke-width="1.5"/>' +
-    '<path d="M 20 200 Q 85 198 130 136 Q 172 72 244 52 L 300 52" fill="none" stroke="#E8E1D5" stroke-width="1.5"/>' +
+    '<path d="M 20 180 Q 80 180 120 120 Q 160 60 240 40 L 300 40" fill="none" stroke="#212834" stroke-width="30" stroke-linecap="round"/>' +
+    '<path d="M 20 160 Q 75 160 112 103 Q 148 46 236 28 L 300 28" fill="none" stroke="#161B22" stroke-width="1.5"/>' +
+    '<path d="M 20 200 Q 85 198 130 136 Q 172 72 244 52 L 300 52" fill="none" stroke="#161B22" stroke-width="1.5"/>' +
     /* Traiettoria racing line */
-    '<path d="M 20 195 Q 65 175 110 125 Q 155 78 200 50 L 300 35" fill="none" stroke="#C0392B" stroke-width="2.5" stroke-dasharray="5 0"/>' +
+    '<path d="M 20 195 Q 65 175 110 125 Q 155 78 200 50 L 300 35" fill="none" stroke="#FFB454" stroke-width="2.5" stroke-dasharray="5 0"/>' +
     /* Entry point */
-    '<circle cx="50" cy="184" r="7" fill="#C0392B"/>' +
-    '<text x="50" y="178" text-anchor="middle" font-size="10" font-family="monospace" fill="#C0392B" font-weight="bold">E</text>' +
-    '<text x="30" y="165" font-size="9" font-family="monospace" fill="#6B6359">ENTRY</text>' +
+    '<circle cx="50" cy="184" r="7" fill="#FFB454"/>' +
+    '<text x="50" y="178" text-anchor="middle" font-size="10" font-family="monospace" fill="#FFB454" font-weight="bold">E</text>' +
+    '<text x="30" y="165" font-size="9" font-family="monospace" fill="#8B95A7">ENTRY</text>' +
     /* Apex */
-    '<circle cx="155" cy="87" r="7" fill="#8B6F47"/>' +
-    '<text x="155" y="82" text-anchor="middle" font-size="10" font-family="monospace" fill="#8B6F47" font-weight="bold">A</text>' +
-    '<text x="162" y="80" font-size="9" font-family="monospace" fill="#8B6F47">APEX</text>' +
+    '<circle cx="155" cy="87" r="7" fill="#4FD1C5"/>' +
+    '<text x="155" y="82" text-anchor="middle" font-size="10" font-family="monospace" fill="#4FD1C5" font-weight="bold">A</text>' +
+    '<text x="162" y="80" font-size="9" font-family="monospace" fill="#4FD1C5">APEX</text>' +
     /* Exit */
-    '<circle cx="265" cy="40" r="7" fill="#1A1814"/>' +
-    '<text x="265" y="35" text-anchor="middle" font-size="10" font-family="monospace" fill="#1A1814" font-weight="bold">X</text>' +
-    '<text x="242" y="25" font-size="9" font-family="monospace" fill="#6B6359">EXIT</text>' +
+    '<circle cx="265" cy="40" r="7" fill="#E7EAF0"/>' +
+    '<text x="265" y="35" text-anchor="middle" font-size="10" font-family="monospace" fill="#E7EAF0" font-weight="bold">X</text>' +
+    '<text x="242" y="25" font-size="9" font-family="monospace" fill="#8B95A7">EXIT</text>' +
     /* Late apex arrow */
-    '<path d="M 140 130 L 120 105" stroke="#C0392B" stroke-width="1" marker-end="url(#arrowT)"/>' +
-    '<text x="145" y="138" font-size="8" font-family="monospace" fill="#C0392B">apex tardivo</text>' +
-    '<defs><marker id="arrowT" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#C0392B"/></marker></defs>' +
+    '<path d="M 140 130 L 120 105" stroke="#FFB454" stroke-width="1" marker-end="url(#arrowT)"/>' +
+    '<text x="145" y="138" font-size="8" font-family="monospace" fill="#FFB454">apex tardivo</text>' +
+    '<defs><marker id="arrowT" markerWidth="5" markerHeight="5" refX="2.5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#FFB454"/></marker></defs>' +
     '</svg>';
 
   /* Grafico frenata SVG */
   var BRAKING_SVG =
     '<svg class="svg-diagram" viewBox="0 0 280 180" xmlns="http://www.w3.org/2000/svg" style="max-width:280px;">' +
     /* Assi */
-    '<line x1="40" y1="150" x2="260" y2="150" stroke="#1A1814" stroke-width="1.5"/>' +
-    '<line x1="40" y1="20"  x2="40"  y2="150" stroke="#1A1814" stroke-width="1.5"/>' +
+    '<line x1="40" y1="150" x2="260" y2="150" stroke="#E7EAF0" stroke-width="1.5"/>' +
+    '<line x1="40" y1="20"  x2="40"  y2="150" stroke="#E7EAF0" stroke-width="1.5"/>' +
     /* Frecce assi */
-    '<polygon points="260,147 265,150 260,153" fill="#1A1814"/>' +
-    '<polygon points="37,20 40,15 43,20" fill="#1A1814"/>' +
+    '<polygon points="260,147 265,150 260,153" fill="#E7EAF0"/>' +
+    '<polygon points="37,20 40,15 43,20" fill="#E7EAF0"/>' +
     /* Label assi */
-    '<text x="262" y="154" font-size="9" font-family="monospace" fill="#6B6359">t</text>' +
-    '<text x="28" y="18"  font-size="9" font-family="monospace" fill="#6B6359">F</text>' +
-    '<text x="42" y="165" font-size="8" font-family="monospace" fill="#6B6359">→ ingresso curva</text>' +
+    '<text x="262" y="154" font-size="9" font-family="monospace" fill="#8B95A7">t</text>' +
+    '<text x="28" y="18"  font-size="9" font-family="monospace" fill="#8B95A7">F</text>' +
+    '<text x="42" y="165" font-size="8" font-family="monospace" fill="#8B95A7">→ ingresso curva</text>' +
     /* Zona frenata */
-    '<rect x="40" y="20" width="130" height="130" fill="rgba(192,57,43,0.05)"/>' +
+    '<rect x="40" y="20" width="130" height="130" fill="rgba(255,180,84,0.06)"/>' +
     /* Frenata normale (linea piatta alta) */
-    '<polyline points="40,35 80,32 130,32 175,90 220,140 240,148" fill="none" stroke="#C0392B" stroke-width="2.5"/>' +
+    '<polyline points="40,35 80,32 130,32 175,90 220,140 240,148" fill="none" stroke="#FFB454" stroke-width="2.5"/>' +
     /* Trail braking (linea che scende graduale) */
-    '<polyline points="40,35 80,32 130,38 175,70 220,125 240,148" fill="none" stroke="#8B6F47" stroke-width="2" stroke-dasharray="5 3"/>' +
+    '<polyline points="40,35 80,32 130,38 175,70 220,125 240,148" fill="none" stroke="#4FD1C5" stroke-width="2" stroke-dasharray="5 3"/>' +
     /* Legenda */
-    '<line x1="45" y1="170" x2="70" y2="170" stroke="#C0392B" stroke-width="2.5"/>' +
-    '<text x="75" y="173" font-size="8" font-family="monospace" fill="#C0392B">frenata classica</text>' +
-    '<line x1="150" y1="170" x2="175" y2="170" stroke="#8B6F47" stroke-width="2" stroke-dasharray="4 2"/>' +
-    '<text x="180" y="173" font-size="8" font-family="monospace" fill="#8B6F47">trail braking</text>' +
+    '<line x1="45" y1="170" x2="70" y2="170" stroke="#FFB454" stroke-width="2.5"/>' +
+    '<text x="75" y="173" font-size="8" font-family="monospace" fill="#FFB454">frenata classica</text>' +
+    '<line x1="150" y1="170" x2="175" y2="170" stroke="#4FD1C5" stroke-width="2" stroke-dasharray="4 2"/>' +
+    '<text x="180" y="173" font-size="8" font-family="monospace" fill="#4FD1C5">trail braking</text>' +
     '</svg>';
 
   var SOVRASTERZO = [
