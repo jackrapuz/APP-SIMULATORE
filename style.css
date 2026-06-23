@@ -3,17 +3,29 @@
    ============================================================ */
 
 :root {
-  --bg:        #F2EDE4;
-  --surface:   #E8E1D5;
-  --surface2:  #D4CCB8;
-  --ink:       #1A1814;
-  --ink-muted: #6B6359;
-  --red:       #C0392B;
-  --red-dark:  #922B21;
-  --tan:       #8B6F47;
-  --border:    rgba(26,24,20,0.12);
+  /* ---- Night telemetry palette ----
+     Cockpit instrument cluster at night × engineer's field journal.
+     Amber = action/brand/ignition; teal = telemetry data line / progress / success. */
+  --bg:         #0E1116;   /* base — near-black, cool blue undertone */
+  --surface:    #161B22;   /* panel / card */
+  --surface-2:  #212834;   /* raised panel, table header, inputs */
+  --ink:        #E7EAF0;   /* primary text (off-white) */
+  --ink-muted:  #8B95A7;   /* secondary text, labels */
+  --signal:     #FFB454;   /* primary accent — instrument amber (CTA, active nav, brand) */
+  --signal-dim: #D98E2B;   /* amber hover / press */
+  --trace:      #4FD1C5;   /* data accent — telemetry teal (progress fills, success) */
+  --danger:     #FF6B6B;   /* error / "no" states */
+  --border:     rgba(231,234,240,0.09);
 
-  --font-display: 'DM Serif Display', Georgia, serif;
+  /* Legacy aliases — kept so the 50+ existing var(--red/-dark/--tan/--surface2)
+     references in this file and inline styles keep resolving. Prefer the
+     canonical names above in any new code. */
+  --red:       var(--signal);
+  --red-dark:  var(--signal-dim);
+  --tan:       var(--trace);
+  --surface2:  var(--surface-2);
+
+  --font-display: 'Fraunces', Georgia, serif;
   --font-body:    'Inter', system-ui, sans-serif;
   --font-mono:    'JetBrains Mono', Consolas, monospace;
 
@@ -26,9 +38,20 @@
   --text-3xl:  1.875rem;
   --text-4xl:  2.25rem;
 
+  /* Spacing scale (4px base) */
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
+  --sp-6: 24px; --sp-8: 32px; --sp-12: 48px; --sp-16: 64px;
+
   --sidebar-w: 220px;
-  --radius:    4px;
-  --radius-lg: 8px;
+  --radius:      3px;   /* instrument-crisp */
+  --radius-lg:   6px;
+  --radius-pill: 999px;
+
+  /* Elevation + accent glow (dark-theme depth) */
+  --elev-1: 0 1px 2px rgba(0,0,0,0.4);
+  --elev-2: 0 6px 18px rgba(0,0,0,0.5);
+  --glow-signal: 0 0 0 1px rgba(255,180,84,0.35), 0 0 12px rgba(255,180,84,0.25);
+  --glow-trace:  0 0 0 1px rgba(79,209,197,0.4), 0 0 10px rgba(79,209,197,0.35);
 
   --transition: 200ms ease;
 }
@@ -40,6 +63,19 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+
+/* Global keyboard focus ring — amber instrument glow on any interactive */
+:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+  border-radius: var(--radius);
+}
+a:focus-visible, button:focus-visible,
+input:focus-visible, select:focus-visible,
+textarea:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
 
 body {
   display: grid;
@@ -79,7 +115,7 @@ body {
 }
 
 .brand-mark {
-  color: var(--red);
+  color: var(--signal);
   font-size: 1.4rem;
   line-height: 1;
 }
@@ -124,12 +160,12 @@ body {
 
 #nav-list li a:hover {
   color: var(--ink);
-  background: rgba(26,24,20,0.05);
+  background: rgba(255,255,255,0.05);
 }
 
 #nav-list li.active a {
-  color: var(--red);
-  background: rgba(192,57,43,0.08);
+  color: var(--signal);
+  background: rgba(255,180,84,0.10);
 }
 
 #nav-list li.active::before {
@@ -139,8 +175,9 @@ body {
   top: 0;
   bottom: 0;
   width: 3px;
-  background: var(--red);
+  background: var(--signal);
   border-radius: 0 2px 2px 0;
+  box-shadow: var(--glow-signal);
 }
 
 #sidebar-progress {
@@ -228,6 +265,7 @@ h3, .h3 {
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 1.25rem 1.5rem;
+  box-shadow: var(--elev-1);
 }
 
 .card-title {
@@ -263,20 +301,20 @@ h3, .h3 {
   align-items: center;
   gap: 0.375rem;
   padding: 0.5rem 1.125rem;
-  background: var(--red);
-  color: #fff;
+  background: var(--signal);
+  color: var(--bg);
   border: none;
   border-radius: var(--radius);
   font-family: var(--font-body);
   font-size: var(--text-sm);
   font-weight: 600;
   cursor: pointer;
-  transition: background var(--transition);
+  transition: background var(--transition), box-shadow var(--transition);
   text-decoration: none;
   line-height: 1;
 }
 
-.btn:hover { background: var(--red-dark); }
+.btn:hover { background: var(--signal-dim); box-shadow: var(--glow-signal); }
 .btn:active { transform: translateY(1px); }
 
 .btn-ghost {
@@ -325,15 +363,15 @@ h3, .h3 {
 }
 
 .tag-red {
-  border-color: var(--red);
-  color: var(--red);
-  background: rgba(192,57,43,0.06);
+  border-color: var(--signal);
+  color: var(--signal);
+  background: rgba(255,180,84,0.08);
 }
 
 .tag-tan {
-  border-color: var(--tan);
-  color: var(--tan);
-  background: rgba(139,111,71,0.06);
+  border-color: var(--trace);
+  color: var(--trace);
+  background: rgba(79,209,197,0.08);
 }
 
 /* ============================================================
@@ -389,7 +427,7 @@ h3, .h3 {
 }
 
 .data-table tr:last-child td { border-bottom: none; }
-.data-table tr:hover td { background: rgba(26,24,20,0.02); }
+.data-table tr:hover td { background: rgba(255,255,255,0.03); }
 
 .data-table .mono {
   font-family: var(--font-mono);
@@ -491,8 +529,8 @@ details[open] summary::after {
 .tab-btn:hover { background: var(--surface2); color: var(--ink); }
 
 .tab-btn.active {
-  background: var(--red);
-  color: #fff;
+  background: var(--signal);
+  color: var(--bg);
 }
 
 /* ============================================================
@@ -590,8 +628,9 @@ details[open] summary::after {
    ============================================================ */
 
 .code-block {
-  background: var(--ink);
-  color: #E8E1D5;
+  background: #0A0D12;
+  color: var(--ink);
+  border: 1px solid var(--border);
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   line-height: 1.7;
@@ -612,9 +651,9 @@ details[open] summary::after {
   top: 0.5rem;
   right: 0.5rem;
   padding: 0.25rem 0.625rem;
-  background: rgba(255,255,255,0.1);
-  color: #E8E1D5;
-  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.08);
+  color: var(--ink);
+  border: 1px solid rgba(255,255,255,0.18);
   border-radius: var(--radius);
   font-family: var(--font-mono);
   font-size: var(--text-xs);
@@ -623,7 +662,7 @@ details[open] summary::after {
 }
 
 .code-copy-btn:hover { background: rgba(255,255,255,0.18); }
-.code-copy-btn.copied { color: #7CDB8A; border-color: #7CDB8A; }
+.code-copy-btn.copied { color: var(--trace); border-color: var(--trace); }
 
 /* ============================================================
    COMPONENTS: CALLOUT
@@ -632,21 +671,21 @@ details[open] summary::after {
 .callout {
   padding: 0.875rem 1.125rem;
   border-radius: var(--radius-lg);
-  border-left: 3px solid var(--tan);
-  background: rgba(139,111,71,0.06);
+  border-left: 3px solid var(--trace);
+  background: rgba(79,209,197,0.07);
   font-size: var(--text-sm);
   color: var(--ink);
   margin-bottom: 1rem;
 }
 
-.callout strong { color: var(--tan); }
+.callout strong { color: var(--trace); }
 
 .callout-red {
-  border-color: var(--red);
-  background: rgba(192,57,43,0.06);
+  border-color: var(--danger);
+  background: rgba(255,107,107,0.08);
 }
 
-.callout-red strong { color: var(--red); }
+.callout-red strong { color: var(--danger); }
 
 /* ============================================================
    COMPONENTS: SECTION DIVIDER
@@ -757,8 +796,8 @@ details[open] summary::after {
 }
 
 .verify-btn:hover { border-color: var(--ink-muted); color: var(--ink); }
-.verify-btn.selected-yes { background: rgba(39,174,96,0.12); border-color: #27AE60; color: #1E8449; }
-.verify-btn.selected-no  { background: rgba(192,57,43,0.1); border-color: var(--red); color: var(--red-dark); }
+.verify-btn.selected-yes { background: rgba(79,209,197,0.14); border-color: var(--trace); color: var(--trace); }
+.verify-btn.selected-no  { background: rgba(255,107,107,0.12); border-color: var(--danger); color: var(--danger); }
 
 /* ============================================================
    NEXT ACTIVITY BOX
@@ -832,8 +871,8 @@ details[open] summary::after {
   justify-content: center;
   min-width: 1.75rem;
   height: 1.75rem;
-  background: var(--red);
-  color: #fff;
+  background: var(--signal);
+  color: var(--bg);
   border-radius: 50%;
   font-family: var(--font-mono);
   font-size: var(--text-xs);
@@ -942,7 +981,7 @@ details[open] summary::after {
 .glossary-dl dd:last-of-type { border-bottom: none; }
 
 mark {
-  background: rgba(192,57,43,0.15);
+  background: rgba(255,180,84,0.22);
   color: inherit;
   border-radius: 2px;
   padding: 0 1px;
@@ -1045,7 +1084,7 @@ mark {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.35);
+  background: rgba(0,0,0,0.6);
   z-index: 90;
 }
 
@@ -1126,8 +1165,8 @@ mark {
 }
 
 .completion-bar.is-done {
-  border-color: #27AE60;
-  background: rgba(39,174,96,0.08);
+  border-color: var(--trace);
+  background: rgba(79,209,197,0.10);
 }
 
 .completion-text {
@@ -1136,7 +1175,7 @@ mark {
 }
 
 .completion-bar.is-done .completion-text {
-  color: #1E8449;
+  color: var(--trace);
   font-weight: 600;
 }
 
@@ -1185,7 +1224,7 @@ mark {
   color: var(--ink-muted);
 }
 
-.wizard-step-state.done { color: #1E8449; font-weight: 600; }
+.wizard-step-state.done { color: var(--trace); font-weight: 600; }
 
 .wizard-body {
   padding: 0.5rem 1.5rem 1.25rem;
@@ -1203,12 +1242,12 @@ mark {
   gap: 0.4rem;
   margin-bottom: 1rem;
   padding: 0.25em 0.7em;
-  background: rgba(192,57,43,0.08);
-  border: 1px solid var(--red);
+  background: rgba(255,180,84,0.10);
+  border: 1px solid var(--signal);
   border-radius: var(--radius);
   font-family: var(--font-mono);
   font-size: var(--text-xs);
-  color: var(--red);
+  color: var(--signal);
 }
 
 .wizard-block { margin-bottom: 1.1rem; }
@@ -1262,8 +1301,8 @@ mark {
 }
 
 .wizard-mistake {
-  border-left: 3px solid var(--red);
-  background: rgba(192,57,43,0.05);
+  border-left: 3px solid var(--danger);
+  background: rgba(255,107,107,0.07);
   padding: 0.5rem 0.875rem;
   border-radius: 0 var(--radius) var(--radius) 0;
 }
@@ -1299,8 +1338,8 @@ mark {
   transition: all var(--transition);
 }
 
-.wizard-dot.done { background: #27AE60; border-color: #27AE60; }
-.wizard-dot.current { box-shadow: 0 0 0 2px var(--red); }
+.wizard-dot.done { background: var(--trace); border-color: var(--trace); }
+.wizard-dot.current { box-shadow: 0 0 0 2px var(--signal); }
 
 .wizard-done-toggle {
   display: inline-flex;
@@ -1315,7 +1354,7 @@ mark {
 .wizard-done-toggle input {
   width: 1.1rem;
   height: 1.1rem;
-  accent-color: #27AE60;
+  accent-color: var(--trace);
   cursor: pointer;
 }
 
@@ -1333,22 +1372,26 @@ mark {
 .fov-result {
   text-align: center;
   padding: 0.5rem 1.25rem;
-  background: var(--ink);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   min-width: 120px;
 }
 
 .fov-result-value {
-  font-family: var(--font-display);
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
   font-size: var(--text-3xl);
-  color: #fff;
+  color: var(--signal);
   line-height: 1;
 }
+
+.fov-result.is-invalid .fov-result-value { color: var(--danger); }
 
 .fov-result-label {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
-  color: var(--surface2);
+  color: var(--ink-muted);
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
@@ -1394,8 +1437,8 @@ mark {
   justify-content: center;
   width: 1.4rem;
   height: 1.4rem;
-  background: var(--red);
-  color: #fff;
+  background: var(--signal);
+  color: var(--bg);
   border-radius: 50%;
   font-family: var(--font-mono);
   font-size: 0.7rem;
@@ -1426,9 +1469,9 @@ mark {
   letter-spacing: 0.05em;
 }
 
-.level-base     { background: rgba(39,174,96,0.14);  color: #1E8449; }
-.level-intermedio { background: rgba(139,111,71,0.16); color: var(--tan); }
-.level-avanzato { background: rgba(192,57,43,0.12);  color: var(--red); }
+.level-base       { background: rgba(79,209,197,0.14); color: var(--trace); }
+.level-intermedio { background: rgba(139,149,167,0.16); color: var(--ink-muted); }
+.level-avanzato   { background: rgba(255,180,84,0.14);  color: var(--signal); }
 
 /* ============================================================
    UTILITY CLASSES
@@ -1461,3 +1504,153 @@ mark {
 .justify-between { justify-content: space-between; }
 
 .full-width { width: 100%; }
+
+.mono-data {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================
+   SIGNATURE: SHIFT-LIGHT PROGRESS STRIP
+   ------------------------------------------------------------
+   A segmented LED tick strip in place of the generic rounded
+   gradient bar. It directly references the RPM shift-lights on
+   Giacomo's ClubSport wheel — reads as cockpit / flight-ops
+   instrumentation, and is the antithesis of the bar every other
+   learning app uses. Cells light up in --trace; the leading lit
+   cell carries a soft glow. Pair with a tabular-nums readout.
+   ============================================================ */
+
+.shift {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.shift-strip {
+  display: flex;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.shift-cell {
+  flex: 1;
+  height: 10px;
+  min-width: 3px;
+  background: var(--surface-2);
+  border-radius: 1px;
+  transition: background var(--transition), box-shadow var(--transition);
+}
+
+.shift-cell.lit { background: var(--trace); }
+
+.shift-cell.lead {
+  background: var(--trace);
+  box-shadow: var(--glow-trace);
+}
+
+.shift-strip.is-complete .shift-cell.lit { background: var(--trace); }
+
+.shift-readout {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--text-xs);
+  color: var(--ink-muted);
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+.shift-strip.sm .shift-cell { height: 6px; }
+
+/* ============================================================
+   CARD HOVER LIFT (interactive cards / links)
+   ============================================================ */
+
+a.card:hover,
+.card.is-interactive:hover,
+.next-activity:hover,
+.entry-card.is-interactive:hover {
+  border-color: var(--ink-muted);
+  box-shadow: var(--elev-2);
+  transform: translateY(-1px);
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+}
+
+/* Next-activity: make the primary "Riprendi da" action prominent */
+.next-activity {
+  border-left: 3px solid var(--signal);
+}
+.next-activity:hover {
+  border-color: var(--signal);
+  box-shadow: var(--glow-signal);
+}
+.next-arrow { color: var(--signal); }
+
+/* ============================================================
+   INPUT VALIDATION STATES
+   ============================================================ */
+
+.form-field input.is-invalid,
+.form-field select.is-invalid,
+.form-field textarea.is-invalid {
+  border-color: var(--danger);
+}
+
+.field-error {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: var(--text-xs);
+  color: var(--danger);
+}
+
+.field-ok {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: var(--text-xs);
+  color: var(--trace);
+}
+
+/* ============================================================
+   STREAK / RECENT ACTIVITY (dashboard)
+   ============================================================ */
+
+.streak-flame {
+  color: var(--signal);
+  font-size: 1.1em;
+  margin-right: 0.25rem;
+}
+
+.streak-card .card-value { color: var(--signal); }
+
+/* ============================================================
+   375px SAFETY PASS
+   ============================================================ */
+
+@media (max-width: 400px) {
+  #main-content { padding: 4rem 1rem 2rem; }
+  h1, .h1 { font-size: var(--text-3xl); }
+  .cards-grid { grid-template-columns: 1fr 1fr; }
+  .wizard-head { flex-wrap: wrap; }
+  .completion-bar { flex-direction: column; align-items: stretch; }
+  .completion-bar .btn { justify-content: center; }
+  .tab-switcher { width: 100%; }
+  .tab-switcher .tab-btn { flex: 1; text-align: center; }
+}
+
+/* ============================================================
+   DIRECTIONAL WIZARD STEP TRANSITION
+   ============================================================ */
+
+@keyframes wizardStepIn {
+  from { opacity: 0; transform: translateX(8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.wizard-body.step-anim { animation: wizardStepIn 180ms ease; }
+
+@media (prefers-reduced-motion: reduce) {
+  .wizard-body.step-anim,
+  a.card:hover, .next-activity:hover,
+  .card.is-interactive:hover { animation: none; transform: none; }
+}

@@ -81,30 +81,30 @@
   var HEEL_TOE_SVG =
     '<svg class="svg-diagram" viewBox="0 0 300 140" xmlns="http://www.w3.org/2000/svg" style="max-width:300px;">' +
     /* Labels */
-    '<text x="45" y="16" text-anchor="middle" font-size="10" font-family="monospace" fill="#6B6359">FRIZIONE</text>' +
-    '<text x="150" y="16" text-anchor="middle" font-size="10" font-family="monospace" fill="#6B6359">FRENO</text>' +
-    '<text x="255" y="16" text-anchor="middle" font-size="10" font-family="monospace" fill="#6B6359">GAS</text>' +
+    '<text x="45" y="16" text-anchor="middle" font-size="10" font-family="monospace" fill="#8B95A7">FRIZIONE</text>' +
+    '<text x="150" y="16" text-anchor="middle" font-size="10" font-family="monospace" fill="#8B95A7">FRENO</text>' +
+    '<text x="255" y="16" text-anchor="middle" font-size="10" font-family="monospace" fill="#8B95A7">GAS</text>' +
     /* Pedal bodies */
-    '<rect x="10" y="25" width="70" height="95" rx="4" fill="#D4CCB8" stroke="#8B6F47" stroke-width="1.5"/>' +
-    '<rect x="115" y="25" width="70" height="95" rx="4" fill="#D4CCB8" stroke="#C0392B" stroke-width="2"/>' +
-    '<rect x="220" y="25" width="70" height="95" rx="4" fill="#D4CCB8" stroke="#8B6F47" stroke-width="1.5"/>' +
+    '<rect x="10" y="25" width="70" height="95" rx="4" fill="#212834" stroke="#4FD1C5" stroke-width="1.5"/>' +
+    '<rect x="115" y="25" width="70" height="95" rx="4" fill="#212834" stroke="#FFB454" stroke-width="2"/>' +
+    '<rect x="220" y="25" width="70" height="95" rx="4" fill="#212834" stroke="#4FD1C5" stroke-width="1.5"/>' +
     /* Foot on brake (big shape) */
-    '<ellipse cx="150" cy="105" rx="28" ry="14" fill="#1A1814" opacity="0.7">' +
+    '<ellipse cx="150" cy="105" rx="28" ry="14" fill="#E7EAF0" opacity="0.7">' +
       '<animate attributeName="ry" values="14;16;14" dur="2s" repeatCount="indefinite"/>' +
     '</ellipse>' +
     /* Foot corner on gas (blip) */
-    '<ellipse cx="248" cy="110" rx="14" ry="10" fill="#1A1814" opacity="0.5">' +
+    '<ellipse cx="248" cy="110" rx="14" ry="10" fill="#E7EAF0" opacity="0.5">' +
       '<animate attributeName="opacity" values="0.2;0.7;0.2" dur="2s" repeatCount="indefinite"/>' +
     '</ellipse>' +
     /* Arrow brake → gas */
-    '<path d="M 185 90 Q 205 75 222 88" fill="none" stroke="#C0392B" stroke-width="1.5" marker-end="url(#arrowRed)" stroke-dasharray="3 2"/>' +
+    '<path d="M 185 90 Q 205 75 222 88" fill="none" stroke="#FFB454" stroke-width="1.5" marker-end="url(#arrowRed)" stroke-dasharray="3 2"/>' +
     '<defs>' +
       '<marker id="arrowRed" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">' +
-        '<path d="M0,0 L6,3 L0,6 Z" fill="#C0392B"/>' +
+        '<path d="M0,0 L6,3 L0,6 Z" fill="#FFB454"/>' +
       '</marker>' +
     '</defs>' +
     /* Blip label */
-    '<text x="205" y="68" text-anchor="middle" font-size="9" font-family="monospace" fill="#C0392B">blip</text>' +
+    '<text x="205" y="68" text-anchor="middle" font-size="9" font-family="monospace" fill="#FFB454">blip</text>' +
     '</svg>';
 
   function render(container, state, utils) {

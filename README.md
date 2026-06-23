@@ -11,10 +11,10 @@ per la postazione Fanatec di Giacomo. HTML/CSS/JS nativo, **nessun build step**,
 ## ✨ Caratteristiche
 
 - **Single-page app** con router hash-based, sidebar + area contenuti
-- **Tachimetro SVG** come indicatore di progresso (signature element)
+- **Shift-light progress strip** + tachimetro SVG come indicatori di progresso (signature element)
 - Contenuti **specifici per l'hardware reale** (valori dai manuali Fanatec ufficiali)
 - **Quaderno persistente** (diario FFB, log sessioni, setup salvati) con export JSON
-- Design "manuale tecnico touge / pit-wall engineer": bone/cream + rosso Mazda
+- Identità visiva **"Night telemetry"** (tema scuro, ambra + teal). Vedi [`DESIGN_SYSTEM.md`](DESIGN_SYSTEM.md)
 
 ---
 

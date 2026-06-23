@@ -83,6 +83,42 @@
     });
   }
 
+  /* ---------- Shift-light progress strip ----------
+     Genera una striscia LED segmentata (riferimento alle luci RPM del
+     volante ClubSport). Le celle accese usano --trace; l'ultima accesa
+     riceve un glow (.lead). Restituisce solo le celle: va inserito dentro
+     un contenitore .shift-strip, oppure usa shiftHTML() per il blocco completo. */
+  function shiftStripCells(pct, cells) {
+    cells = cells || 14;
+    pct = Math.max(0, Math.min(100, pct));
+    var lit = Math.round(pct / 100 * cells);
+    var out = '';
+    for (var i = 0; i < cells; i++) {
+      var cls = 'shift-cell';
+      if (i < lit) cls += ' lit';
+      if (i === lit - 1) cls += ' lead';
+      out += '<span class="' + cls + '"></span>';
+    }
+    return out;
+  }
+
+  /* Pad percentuale a 3 cifre tipo strumento: 68 -> "068". */
+  function padPct(pct) {
+    var n = Math.max(0, Math.min(100, Math.round(pct)));
+    return (n < 10 ? '00' : n < 100 ? '0' : '') + n + '%';
+  }
+
+  /* Blocco completo: striscia + readout monospace tabular-nums. */
+  function shiftStripHTML(pct, opts) {
+    opts = opts || {};
+    var cells = opts.cells || 14;
+    var sm = opts.sm ? ' sm' : '';
+    return '<div class="shift">' +
+      '<div class="shift-strip' + sm + '">' + shiftStripCells(pct, cells) + '</div>' +
+      (opts.readout === false ? '' : '<span class="shift-readout">' + padPct(pct) + '</span>') +
+    '</div>';
+  }
+
   /* ---------- Calcolo % globale ---------- */
 
   function globalPct() {
@@ -103,9 +139,12 @@
 
   function renderSidebarProgress() {
     var pct = globalPct();
-    var fill = document.getElementById('global-progress-fill');
+    var strip = document.getElementById('global-progress-strip');
     var pctEl = document.getElementById('global-progress-pct');
-    if (fill) fill.style.width = pct + '%';
+    if (strip) {
+      strip.innerHTML = shiftStripCells(pct, 14);
+      strip.setAttribute('aria-valuenow', pct);
+    }
     if (pctEl) pctEl.textContent = pct + '%';
   }
 
@@ -138,7 +177,13 @@
 
     /* Aggiorna nav active */
     document.querySelectorAll('#nav-list li').forEach(function (li) {
-      li.classList.toggle('active', li.dataset.id === section.id);
+      var isActive = li.dataset.id === section.id;
+      li.classList.toggle('active', isActive);
+      var link = li.querySelector('a');
+      if (link) {
+        if (isActive) link.setAttribute('aria-current', 'page');
+        else link.removeAttribute('aria-current');
+      }
     });
 
     /* Chiudi sidebar su mobile */
@@ -156,6 +201,8 @@
       markComplete: markComplete,
       completionBarHTML: completionBarHTML,
       bindCompletionBar: bindCompletionBar,
+      shiftStripHTML: shiftStripHTML,
+      shiftStripCells: shiftStripCells,
       globalPct: globalPct,
       STATE: STATE
     };
@@ -223,5 +270,7 @@
   window.SimRacing = window.SimRacing || {};
   window.SimRacing.save = save;
   window.SimRacing.load = load;
+  window.SimRacing.shiftStripHTML = shiftStripHTML;
+  window.SimRacing.shiftStripCells = shiftStripCells;
 
 }());
