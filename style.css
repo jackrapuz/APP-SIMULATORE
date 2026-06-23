@@ -211,6 +211,14 @@ body {
   background: var(--signal);
   border-radius: 0 2px 2px 0;
   box-shadow: var(--glow-signal);
+  animation: navBarIn 240ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  transform-origin: center;
+}
+
+/* La barretta accento entra "scattando" dall'alto. */
+@keyframes navBarIn {
+  from { transform: scaleY(0); opacity: 0; }
+  to   { transform: scaleY(1); opacity: 1; }
 }
 
 #sidebar-progress {
@@ -1167,17 +1175,37 @@ mark {
    SECTION FADE (transizione di navigazione)
    ============================================================ */
 
+/* La sezione sfuma (solo opacità); i contenuti salgono a cascata sotto. */
 @keyframes sectionFadeIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 .section-fade {
-  animation: sectionFadeIn 150ms ease;
+  animation: sectionFadeIn 160ms ease;
 }
 
+/* Entrata a cascata dei blocchi principali della sezione (stagger).
+   fill-mode both così durante il delay restano nello stato iniziale
+   (niente sfarfallio) e dopo l'animazione restano visibili. */
+@keyframes contentRise {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+#main-content.section-fade > * {
+  animation: contentRise 320ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+#main-content.section-fade > *:nth-child(1) { animation-delay: 30ms; }
+#main-content.section-fade > *:nth-child(2) { animation-delay: 70ms; }
+#main-content.section-fade > *:nth-child(3) { animation-delay: 110ms; }
+#main-content.section-fade > *:nth-child(4) { animation-delay: 150ms; }
+#main-content.section-fade > *:nth-child(5) { animation-delay: 190ms; }
+#main-content.section-fade > *:nth-child(n+6) { animation-delay: 230ms; }
+
 @media (prefers-reduced-motion: reduce) {
-  .section-fade { animation: none; }
+  .section-fade,
+  #main-content.section-fade > * { animation: none; }
 }
 
 /* ============================================================
@@ -1581,6 +1609,13 @@ mark {
 .shift-cell.lead {
   background: var(--trace);
   box-shadow: var(--glow-trace);
+  animation: leadPulse 1.8s ease-in-out infinite;
+}
+
+/* Il LED di testa "respira" come un indicatore di telemetria attivo. */
+@keyframes leadPulse {
+  0%, 100% { box-shadow: var(--glow-trace); opacity: 1; }
+  50%      { box-shadow: 0 0 10px 2px var(--trace); opacity: 0.78; }
 }
 
 .shift-strip.is-complete .shift-cell.lit { background: var(--trace); }
@@ -1652,6 +1687,16 @@ a.card:hover,
   color: var(--signal);
   font-size: 1.1em;
   margin-right: 0.25rem;
+  display: inline-block;
+  transform-origin: center bottom;
+  animation: flameFlicker 2.4s ease-in-out infinite;
+}
+
+/* Lieve guizzo della fiamma, senza distrarre. */
+@keyframes flameFlicker {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  35%      { transform: scale(1.08) rotate(-3deg); opacity: 0.9; }
+  70%      { transform: scale(0.97) rotate(2deg); opacity: 0.96; }
 }
 
 .streak-card .card-value { color: var(--signal); }
@@ -1750,5 +1795,8 @@ a.card:hover,
 @media (prefers-reduced-motion: reduce) {
   .wizard-body.step-anim,
   a.card:hover, .next-activity:hover,
-  .card.is-interactive:hover { animation: none; transform: none; }
+  .card.is-interactive:hover,
+  .shift-cell.lead,
+  .streak-flame,
+  #nav-list li.active::before { animation: none; transform: none; }
 }
