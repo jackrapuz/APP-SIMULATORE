@@ -38,7 +38,7 @@
     renderSidebarProgress();
 
     /* Se la dashboard è attiva, aggiorna il tachimetro senza navigare */
-    var currentHash = location.hash.slice(1) || 'dashboard';
+    var currentHash = location.hash.slice(1) || 'profilo';
     if (currentHash === 'dashboard' && window.SimRacing && window.SimRacing.refreshDashboard) {
       window.SimRacing.refreshDashboard(STATE);
     }
@@ -117,6 +117,45 @@
       '<div class="shift-strip' + sm + '">' + shiftStripCells(pct, cells) + '</div>' +
       (opts.readout === false ? '' : '<span class="shift-readout">' + padPct(pct) + '</span>') +
     '</div>';
+  }
+
+  /* ---------- Streak / attività recente ----------
+     Le sessioni salvano date "YYYY-MM-DD" (vedi quaderno.js). Calcola la serie
+     di giorni consecutivi con almeno una sessione (che termina oggi o ieri) e
+     il numero di sessioni negli ultimi 7 giorni. Esposto via utils per riuso
+     in dashboard e profilo (niente copie duplicate). */
+  function dayDiff(aStr, bStr) {
+    var a = new Date(aStr + 'T00:00:00');
+    var b = new Date(bStr + 'T00:00:00');
+    return Math.round((a - b) / 86400000);
+  }
+
+  function computeActivity(sessions) {
+    var dates = {};
+    (sessions || []).forEach(function (s) { if (s && s.date) dates[s.date] = true; });
+    var unique = Object.keys(dates).sort();           // ascendente
+    var today = new Date().toISOString().slice(0, 10);
+
+    var last7 = unique.filter(function (d) {
+      var diff = dayDiff(today, d);
+      return diff >= 0 && diff < 7;
+    }).length;
+
+    /* Streak: parti da oggi (o ieri) e conta a ritroso i giorni consecutivi. */
+    var streak = 0;
+    if (unique.length) {
+      var newest = unique[unique.length - 1];
+      var gapFromToday = dayDiff(today, newest);
+      if (gapFromToday <= 1) {
+        var cursor = newest;
+        streak = 1;
+        for (var i = unique.length - 2; i >= 0; i--) {
+          if (dayDiff(cursor, unique[i]) === 1) { streak++; cursor = unique[i]; }
+          else break;
+        }
+      }
+    }
+    return { streak: streak, last7: last7 };
   }
 
   /* ---------- Calcolo % globale ---------- */
@@ -204,6 +243,7 @@
       shiftStripHTML: shiftStripHTML,
       shiftStripCells: shiftStripCells,
       globalPct: globalPct,
+      computeActivity: computeActivity,
       STATE: STATE
     };
     section.render(main, STATE, utils);
@@ -245,11 +285,11 @@
     buildNav();
     renderSidebarProgress();
 
-    var initialId = location.hash.slice(1) || 'dashboard';
+    var initialId = location.hash.slice(1) || 'profilo';
     navigate(initialId);
 
     window.addEventListener('hashchange', function () {
-      navigate(location.hash.slice(1) || 'dashboard');
+      navigate(location.hash.slice(1) || 'profilo');
     });
 
     var hamburger = document.getElementById('hamburger');
