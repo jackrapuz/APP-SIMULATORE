@@ -11,9 +11,12 @@ per la postazione Fanatec di Giacomo. HTML/CSS/JS nativo, **nessun build step**,
 ## ✨ Caratteristiche
 
 - **Single-page app** con router hash-based, sidebar + area contenuti
+- **Profilo pilota** come landing: avatar, racing tag, specifiche rig, export profilo
 - **Shift-light progress strip** + tachimetro SVG come indicatori di progresso (signature element)
 - Contenuti **specifici per l'hardware reale** (valori dai manuali Fanatec ufficiali)
+- **Calcolatore FOV** integrato nel wizard Postazione (diagonale + distanza → FOV verticale per AC)
 - **Quaderno persistente** (diario FFB, log sessioni, setup salvati) con export JSON
+- **Monetizzazione FREE/PRO** con licenza offline a firma ECDSA P-256. Vedi [`LICENSING.md`](LICENSING.md)
 - Identità visiva **"Night telemetry"** (tema scuro, ambra + teal). Vedi [`DESIGN_SYSTEM.md`](DESIGN_SYSTEM.md)
 
 ---
@@ -37,10 +40,11 @@ con fallback di sistema quando offline.
 .
 ├── index.html          # shell: layout, sidebar, caricamento script
 ├── style.css           # design system completo
-├── app.js              # router, stato globale, utilità localStorage
+├── app.js              # router, stato globale, utilità localStorage, verifica licenza
 ├── sections/           # una sezione = un modulo auto-registrante
+│   ├── profilo.js      # landing: profilo pilota, rig, export, stato PRO
 │   ├── dashboard.js    # tachimetro + statistiche + prossima attività
-│   ├── postazione.js   # ergonomia, schemi SVG, setup monitor, checklist
+│   ├── postazione.js   # ergonomia, schemi SVG, setup monitor, calcolatore FOV, checklist
 │   ├── ffb.js          # Tuning Menu Fanatec, profili AC/ACC/iRacing, diagnostica
 │   ├── cambio.js       # ClubSport SQ V1.5: H↔SEQ, calibrazione, heel-toe
 │   ├── teoria.js       # traiettoria, frenata, race craft, telemetria
@@ -48,7 +52,11 @@ con fallback di sistema quando offline.
 │   ├── drill.js        # piano esercizi progressivo con metriche
 │   ├── giochi.js       # guide AC / ACC / iRacing + overlay
 │   ├── glossario.js    # glossario ricercabile
-│   └── quaderno.js     # diario persistente (localStorage)
+│   ├── quaderno.js     # diario persistente (localStorage)
+│   └── buy.js          # pagina vendita PRO: pricing, confronto FREE/PRO, attivazione key
+├── tools/              # tooling licenze (uso locale, fuori dall'app)
+│   ├── keygen.mjs      # genera la coppia di chiavi ECDSA P-256 (una volta)
+│   └── genlicense.mjs  # firma una license key per un cliente
 ├── MONTAGGIO - Parti non fornite.md   # checklist montaggio postazione
 └── *.pdf               # manuali Fanatec ufficiali (referenziati in-app)
 ```

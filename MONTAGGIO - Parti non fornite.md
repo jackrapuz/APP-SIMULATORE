@@ -19,20 +19,37 @@
 
 ---
 
-## 2. Parti / utensili NON forniti — da procurare
+## 2. Parti / utensili NON forniti — stato
 
-| Cosa | A cosa serve | Note |
-|------|--------------|------|
-| **Brugola (Allen) 2 mm** | Togliere i tappi di fondo del cambio per inserire le T-nut | Non inclusa |
-| **Brugola (Allen) 5 mm** | Regolare la durezza della leva del cambio (apertura "+/−") | Non inclusa |
-| **Bulloni M5** (filetto max **8 mm**) | Montaggio **laterale** del cambio, se non usi il Shifter Holder | Non inclusi |
-| **Bulloni M6** (filetto max **15 mm**) | Montaggio **dal basso** del cambio, se non usi il Shifter Holder | Non inclusi |
-| **Bulloni M6x(10+X)** | Solo se vuoi hard-montare la base **fuori** dal cockpit | Per il cockpit la bulloneria base è inclusa nel rig |
-| **2x cavo video** (HDMI 2.0 / DisplayPort) | Collegare i due monitor al PC | Verifica gli ingressi della tua GPU |
-| **Multipresa / ciabatta con interruttore** | Base DD (180W) + 2 monitor + PC | Comoda per spegnere tutto insieme |
-| **Panno in microfibra** | Pulizia base/volante (solo a secco o appena umido) | Niente detergenti: danneggiano la base |
+Legenda: 🛒 = da comprare · ✅ = già procurato · ❌ = non serve nel tuo setup.
+
+| Stato | Cosa | A cosa serve | Note |
+|-------|------|--------------|------|
+| 🛒 | **Brugola (Allen) 2 mm** | Togliere i tappi di fondo del cambio per inserire le T-nut | Coperta da un set brugole metriche |
+| 🛒 | **Brugola (Allen) 5 mm** | Regolare la durezza della leva del cambio (apertura "+/−") | Coperta da un set brugole metriche |
+| ❌ | **Bulloni M5** (filetto max **8 mm**) | Montaggio **laterale** del cambio, se non usi il Shifter Holder | Non serve: usi lo Shifter Holder |
+| ❌ | **Bulloni M6** (filetto max **15 mm**) | Montaggio **dal basso** del cambio, se non usi il Shifter Holder | Non serve: usi lo Shifter Holder |
+| ❌ | **Bulloni M6x(10+X)** | Solo se vuoi hard-montare la base **fuori** dal cockpit | Non serve: la base va sul CSL Cockpit (bulloneria inclusa nel rig) |
+| ✅ | **2x cavo video** (HDMI 2.0 / DisplayPort) | Collegare i due monitor al PC | Già a disposizione |
+| 🛒 | **Multipresa / ciabatta con interruttore** | Base DD (180W) + 2 monitor + PC | Comoda per spegnere tutto insieme |
+| 🛒 | **Panno in microfibra** | Pulizia base/volante (solo a secco o appena umido) | Niente detergenti: danneggiano la base |
+| ✅ | **PC** | — | Già a disposizione |
+| ✅ | **Monitor** (32" + 24") | — | Già a disposizione |
+| ✅ | **Bracci / supporti monitor** | — | Già a disposizione (vedi verifiche sotto) |
 
 > Nota: una normale cassetta di brugole metriche (1.5–6 mm) copre sia il 2 mm che il 5 mm.
+
+### Lista della spesa (solo le 3 cose mancanti)
+
+| # | Articolo | Quantità |
+|---|----------|----------|
+| 1 | Set brugole metriche (1.5–6 mm) | 1 set |
+| 2 | Multipresa/ciabatta con interruttore (≥4 prese) | 1 |
+| 3 | Panno in microfibra | 1 |
+
+### Verifiche sui bracci monitor (già posseduti)
+- **Portata + VESA**: il 32" pesa parecchio — controlla che il braccio regga il peso e abbia l'attacco VESA corretto (di solito 100×100 o 75×75).
+- **Fissaggio**: bracci a morsetto richiedono un bordo scrivania; su stand monitor dedicato verifica che l'asta/attacco sia compatibile.
 
 ---
 
