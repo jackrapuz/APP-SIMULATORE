@@ -50,7 +50,7 @@
      NOTA: questa è una coppia di SVILUPPO (funziona per testare il flusso).
      Prima di vendere, rigenera le chiavi e sostituisci questo valore con la
      pubblica di produzione, conservando la privata al sicuro (vedi LICENSING.md). */
-  var PUBLIC_KEY_SPKI = 'MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAElO75ds14nOjhKZJZXT4LaZaTVYN1C30YJSptbNZUWC2B6PW4dSdb8zdMyrKsVgsNe6yv3GGS5HP+4Uwu35PV9Q==';
+  var PUBLIC_KEY_SPKI = 'MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAErIS4WqJ/DoROY6wVc7+izfqq1iFqao1IlKAtwUbpg4DhV18f72rEb6slavJcM7caZmEizzske8eQlgKSWagQbg==';
 
   var TRIAL_MS = 7 * 24 * 60 * 60 * 1000;
 

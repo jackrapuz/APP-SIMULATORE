@@ -53,6 +53,10 @@ dall'altro **strumenti/coaching avanzati e costosi in inglese** (Coach Dave, Dri
 **onboarding strutturato, in italiano, hardware-aware, con strumenti leggeri e tracking** per la fascia
 0→competente. Questo è il vuoto.
 
+**Segmento.** Prosumer / niche **B2C** (appassionati che hanno già investito in hardware serio), con
+canale secondario **B2B2C** (coach, community, team, retailer Fanatec). Non è B2B puro né mass-market:
+il bacino è ristretto ma ad alta intenzione d'acquisto.
+
 ---
 
 ## 3. Differenziazione e posizionamento
@@ -63,9 +67,11 @@ Tre leve difendibili:
    teoria in azione immediata — assenti nei concorrenti di contenuto.
 3. **Italiano-first e hardware-specifico** (Fanatec CSL DD, ClubSport): istruzioni concrete, non generiche.
 
-> **Positioning statement** — *Per il neofita del sim racing che ha investito in hardware serio, Sim
+> **Positioning statement** — *Per il neofita del sim racing che ha investito in hardware serio e vuole
+> sapere cosa configurare e come migliorare senza spulciare decine di video e thread in inglese, Sim
 > Racing Academy è il percorso guidato in italiano che trasforma il caos di video e forum in passi
-> ordinati, strumenti pratici e progresso misurabile — dalla postazione alla guida competitiva.*
+> ordinati, strumenti pratici e progresso misurabile — a differenza di YouTube/Reddit (gratis ma
+> frammentati) e dei tool pro in inglese (Coach Dave, Driver61), costosi e pensati per chi è già avanti.*
 
 ---
 
@@ -115,6 +121,16 @@ evitare all'inizio.
   referral per coach (lega al modello C).
 - **Co-marketing hardware**: schede e guide specifiche per modello → naturale fit con un rivenditore
   Fanatec come canale (bundle "hardware + percorso di apprendimento").
+
+**Percorso Anno 1 (stime prudenti, modello B acquisto unico ~24 €).**
+- **Traffico**: crescita da ~0 a ~3–5k visite/mese a fine anno (SEO su query hardware + YouTube +
+  community) → ~20–35k visite totali Anno 1.
+- **Conversione**: 1,5–3% dei visitatori "engaged" all'acquisto una tantum → ~300–700 vendite.
+- **Ricavo**: ~300–700 × ~24 € ≈ **7–17k € Anno 1** (one-time), + 1–2 accordi licensing
+  (200–1.000 € cad.) marginali ma ad alto valore di prova sociale.
+- **Nota MRR**: il modello una tantum non genera MRR; l'MRR diventa metrica rilevante solo
+  nell'eventuale evoluzione SaaS (target d'uscita indicativo: ~50–100 paganti × ~4 €/mese ≈
+  **200–400 € MRR**). L'Anno 1 si misura su vendite cumulate e retention dei contenuti, non su MRR.
 
 ---
 

@@ -1,0 +1,10 @@
+# Segreti licenze — mai committare
+SECRETS.local.md
+*.local.md
+
+# Documenti di strategia tenuti solo in locale
+GROWTH_STRATEGY.md
+
+# OS / editor
+.DS_Store
+Thumbs.db
