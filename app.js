@@ -47,9 +47,10 @@
      ============================================================ */
 
   /* SPKI (base64) della chiave pubblica. Generata con tools/keygen.mjs.
-     NOTA: questa è una coppia di SVILUPPO (funziona per testare il flusso).
-     Prima di vendere, rigenera le chiavi e sostituisci questo valore con la
-     pubblica di produzione, conservando la privata al sicuro (vedi LICENSING.md). */
+     Coppia di PRODUZIONE (generata 2026-06-24). La privata corrispondente è
+     conservata fuori dal repo (SECRETS.local.md / gestore password) e serve
+     solo a firmare le license key. NON rigenerare le chiavi: invaliderebbe
+     tutte le key già emesse (vedi LICENSING.md). */
   var PUBLIC_KEY_SPKI = 'MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAErIS4WqJ/DoROY6wVc7+izfqq1iFqao1IlKAtwUbpg4DhV18f72rEb6slavJcM7caZmEizzske8eQlgKSWagQbg==';
 
   var TRIAL_MS = 7 * 24 * 60 * 60 * 1000;
