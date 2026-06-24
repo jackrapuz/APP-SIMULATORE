@@ -4,6 +4,9 @@
   window.SimRacing = window.SimRacing || {};
   window.SimRacing.sections = window.SimRacing.sections || [];
 
+  /* Esercizi disponibili in FREE; il resto è gated PRO. */
+  var FREE_DRILLS = { d1: true, d2: true, d3: true, d4: true };
+
   var DRILLS = [
     {
       fase: 'Settimane 1–2',
@@ -56,6 +59,7 @@
 
   function render(container, state, utils) {
     var done = utils.load('drill_done', {});
+    var pro = utils.isPro();
 
     function saveAndUpdate(id, checked) {
       done[id] = checked;
@@ -82,6 +86,8 @@
         '<strong>Come usare:</strong> Spunta un esercizio quando l\'hai completato soddisfacendo la metrica di successo. Non avanzare di fase prima di completare almeno il 75% della fase corrente.' +
       '</div>' +
 
+      (pro ? '' : utils.paywallCardHTML('I primi 4 esercizi sono FREE. Sblocca tutto il piano di allenamento (oltre 20 esercizi su tutte le fasi) con PRO.')) +
+
       DRILLS.map(function (fase) {
         var fId = fase.fase.replace(/\s+/g, '-');
         var fp = fasePct(fase, done);
@@ -99,11 +105,13 @@
           '</div>' +
           '<ul class="checklist">' +
           fase.esercizi.map(function (e) {
+            var locked = !pro && !FREE_DRILLS[e.id];
             var checked = done[e.id] ? ' checked' : '';
-            return '<li>' +
-              '<input type="checkbox" id="drill-' + e.id + '"' + checked + ' data-id="' + e.id + '">' +
+            return '<li' + (locked ? ' class="locked"' : '') + '>' +
+              '<input type="checkbox" id="drill-' + e.id + '"' + checked + ' data-id="' + e.id + '"' +
+                (locked ? ' disabled' : '') + '>' +
               '<label class="check-label" for="drill-' + e.id + '">' +
-                '<div>' + e.desc + '</div>' +
+                '<div>' + e.desc + (locked ? ' <span class="paywall-badge">PRO</span>' : '') + '</div>' +
                 '<div style="margin-top:0.25rem;display:flex;gap:0.75rem;flex-wrap:wrap;">' +
                   '<span class="badge">✓ ' + e.metrica + '</span>' +
                   '<span class="tag">' + e.durata + '</span>' +
@@ -118,6 +126,12 @@
     /* Attach events */
     container.querySelectorAll('input[type="checkbox"][data-id]').forEach(function (el) {
       el.addEventListener('change', function () {
+        /* Gli esercizi gated non sono spuntabili in FREE. */
+        if (!pro && !FREE_DRILLS[el.dataset.id]) {
+          el.checked = false;
+          utils.showPaywallModal('Questo esercizio fa parte del piano PRO.');
+          return;
+        }
         saveAndUpdate(el.dataset.id, el.checked);
       });
     });

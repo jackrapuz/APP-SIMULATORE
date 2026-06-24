@@ -237,6 +237,8 @@
     var done = utils.load('postazione_wizard', {});   // { stepId: true }
     var verify = utils.load('postazione_verify', {});
     var current = 0;
+    var pro = utils.isPro();
+    var FREE_STEPS = 3;   // i primi 3 passi sono FREE, il resto è PRO
 
     function doneCount() {
       return STEPS.filter(function (s) { return done[s.id]; }).length;
@@ -304,7 +306,47 @@
     function renderWizard() {
       var step = STEPS[current];
       var isDone = !!done[step.id];
+      var locked = !pro && current >= FREE_STEPS;
       var pct = Math.round(doneCount() / STEPS.length * 100);
+
+      var bodyHTML = locked
+        ? '<div class="wizard-body">' +
+            '<span class="wizard-hw">⚙ ' + step.hardware + '</span>' +
+            '<h3>' + step.titolo + '</h3>' +
+            utils.paywallCardHTML('I primi ' + FREE_STEPS + ' passi sono FREE. Sblocca la guida completa alla postazione (tutti i ' + STEPS.length + ' passi) con PRO.') +
+          '</div>'
+        : '<div class="wizard-body">' +
+            '<span class="wizard-hw">⚙ ' + step.hardware + '</span>' +
+            '<h3>' + step.titolo + '</h3>' +
+
+            '<div class="wizard-block">' +
+              '<span class="wizard-block-label">Come fare</span>' +
+              '<ol class="wizard-howto">' +
+              step.come.map(function (c) { return '<li>' + c + '</li>'; }).join('') +
+              '</ol>' +
+            '</div>' +
+
+            (step.fov ? renderFovBlock() : '') +
+
+            '<div class="wizard-block">' +
+              '<span class="wizard-block-label">Perché</span>' +
+              '<p class="wizard-why">' + step.perche + '</p>' +
+            '</div>' +
+
+            '<div class="wizard-block">' +
+              '<span class="wizard-block-label">Come verificare</span>' +
+              '<p class="wizard-verify">' + step.verifica + '</p>' +
+            '</div>' +
+
+            '<div class="wizard-block">' +
+              '<span class="wizard-block-label">Errore comune</span>' +
+              '<p class="wizard-mistake">' + step.erroreComune + '</p>' +
+            '</div>' +
+
+            '<label class="wizard-done-toggle">' +
+              '<input type="checkbox" id="pz-done"' + (isDone ? ' checked' : '') + '> Fatto, passo completato' +
+            '</label>' +
+          '</div>';
 
       wizardEl.innerHTML =
         '<div class="wizard-progress"><div class="wizard-progress-fill" style="width:' + pct + '%"></div></div>' +
@@ -312,38 +354,7 @@
           '<span class="wizard-step-count">Passo ' + (current + 1) + ' / ' + STEPS.length + '</span>' +
           '<span class="wizard-step-state' + (isDone ? ' done' : '') + '">' + (isDone ? '✓ Fatto' : 'Da fare') + '</span>' +
         '</div>' +
-        '<div class="wizard-body">' +
-          '<span class="wizard-hw">⚙ ' + step.hardware + '</span>' +
-          '<h3>' + step.titolo + '</h3>' +
-
-          '<div class="wizard-block">' +
-            '<span class="wizard-block-label">Come fare</span>' +
-            '<ol class="wizard-howto">' +
-            step.come.map(function (c) { return '<li>' + c + '</li>'; }).join('') +
-            '</ol>' +
-          '</div>' +
-
-          (step.fov ? renderFovBlock() : '') +
-
-          '<div class="wizard-block">' +
-            '<span class="wizard-block-label">Perché</span>' +
-            '<p class="wizard-why">' + step.perche + '</p>' +
-          '</div>' +
-
-          '<div class="wizard-block">' +
-            '<span class="wizard-block-label">Come verificare</span>' +
-            '<p class="wizard-verify">' + step.verifica + '</p>' +
-          '</div>' +
-
-          '<div class="wizard-block">' +
-            '<span class="wizard-block-label">Errore comune</span>' +
-            '<p class="wizard-mistake">' + step.erroreComune + '</p>' +
-          '</div>' +
-
-          '<label class="wizard-done-toggle">' +
-            '<input type="checkbox" id="pz-done"' + (isDone ? ' checked' : '') + '> Fatto, passo completato' +
-          '</label>' +
-        '</div>' +
+        bodyHTML +
 
         '<div class="wizard-foot">' +
           '<div class="wizard-nav-btns">' +
@@ -352,7 +363,9 @@
           '</div>' +
           '<div class="wizard-dots">' +
           STEPS.map(function (s, i) {
+            var dotLocked = !pro && i >= FREE_STEPS;
             return '<button class="wizard-dot' + (done[s.id] ? ' done' : '') + (i === current ? ' current' : '') +
+              (dotLocked ? ' locked' : '') +
               '" data-goto="' + i + '" title="Passo ' + (i + 1) + ': ' + s.titolo + '"' +
               ' aria-label="Passo ' + (i + 1) + ': ' + s.titolo + (done[s.id] ? ' (completato)' : '') + '"' +
               (i === current ? ' aria-current="step"' : '') + '></button>';
@@ -364,10 +377,24 @@
       var prev = wizardEl.querySelector('#pz-prev');
       var next = wizardEl.querySelector('#pz-next');
       if (prev) prev.addEventListener('click', function () { if (current > 0) { current--; renderWizard(); } });
-      if (next) next.addEventListener('click', function () { if (current < STEPS.length - 1) { current++; renderWizard(); } });
+      if (next) next.addEventListener('click', function () {
+        if (current >= STEPS.length - 1) return;
+        if (!pro && current + 1 >= FREE_STEPS) {
+          utils.showPaywallModal('Gli altri passi della guida postazione sono PRO.');
+          return;
+        }
+        current++; renderWizard();
+      });
 
       wizardEl.querySelectorAll('.wizard-dot').forEach(function (d) {
-        d.addEventListener('click', function () { current = parseInt(d.dataset.goto, 10); renderWizard(); });
+        d.addEventListener('click', function () {
+          var target = parseInt(d.dataset.goto, 10);
+          if (!pro && target >= FREE_STEPS) {
+            utils.showPaywallModal('Gli altri passi della guida postazione sono PRO.');
+            return;
+          }
+          current = target; renderWizard();
+        });
       });
 
       var chk = wizardEl.querySelector('#pz-done');

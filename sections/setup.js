@@ -151,6 +151,7 @@
 
   function render(container, state, utils) {
     var maxRank = 1;   // filtro livello corrente (1=Base di default per principiante)
+    var pro = utils.isPro();
 
     container.innerHTML =
       '<div class="section-header">' +
@@ -179,8 +180,8 @@
       '<p class="text-muted text-sm mb-2">Da principiante parti dal <strong>Base</strong>: pochi parametri ad alto impatto. Sblocca il resto quando sei pronto.</p>' +
       '<div class="tab-switcher" id="level-filter">' +
         '<button class="tab-btn active" data-rank="1">Base</button>' +
-        '<button class="tab-btn" data-rank="2">Intermedio</button>' +
-        '<button class="tab-btn" data-rank="3">Tutti</button>' +
+        '<button class="tab-btn' + (pro ? '' : ' locked') + '" data-rank="2">Intermedio' + (pro ? '' : ' <span class="paywall-badge">PRO</span>') + '</button>' +
+        '<button class="tab-btn' + (pro ? '' : ' locked') + '" data-rank="3">Tutti' + (pro ? '' : ' <span class="paywall-badge">PRO</span>') + '</button>' +
       '</div>' +
       '<div id="setup-accordion"></div>' +
 
@@ -222,15 +223,21 @@
         return d.zona === zonaSel.value && d.problema === probSel.value;
       })[0];
       if (!entry) { diagOut.innerHTML = ''; return; }
+      /* In FREE mostriamo solo la prima soluzione (la più sicura); il resto è PRO. */
+      var sols = pro ? entry.soluzioni : entry.soluzioni.slice(0, 1);
+      var extra = entry.soluzioni.length - sols.length;
       diagOut.innerHTML =
         '<div class="section-divider" style="margin:1rem 0;"></div>' +
-        entry.soluzioni.map(function (s, i) {
+        sols.map(function (s, i) {
           return '<div class="solution-card">' +
             '<div class="sol-what"><span class="sol-rank">' + (i + 1) + '</span>' + escapeHtml(s.cosa) + '</div>' +
             '<div class="sol-line"><b>Come:</b> ' + escapeHtml(s.come) + '</div>' +
             '<div class="sol-line"><b>Perché:</b> ' + escapeHtml(s.perche) + '</div>' +
           '</div>';
-        }).join('');
+        }).join('') +
+        (extra > 0
+          ? utils.paywallCardHTML('Ci sono altre ' + extra + ' soluzioni per questo problema. Sbloccale con PRO.')
+          : '');
     }
 
     zonaSel.addEventListener('change', refreshProblems);
@@ -267,9 +274,14 @@
 
     container.querySelectorAll('#level-filter .tab-btn').forEach(function (btn) {
       btn.addEventListener('click', function () {
+        var rank = parseInt(btn.dataset.rank, 10);
+        if (!pro && rank > 1) {
+          utils.showPaywallModal('I parametri di livello Intermedio e Avanzato sono PRO.');
+          return;
+        }
         container.querySelectorAll('#level-filter .tab-btn').forEach(function (b) { b.classList.remove('active'); });
         btn.classList.add('active');
-        maxRank = parseInt(btn.dataset.rank, 10);
+        maxRank = rank;
         renderParams();
       });
     });

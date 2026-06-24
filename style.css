@@ -1800,3 +1800,120 @@ a.card:hover,
   .streak-flame,
   #nav-list li.active::before { animation: none; transform: none; }
 }
+
+/* ============================================================
+   PAYWALL / GATING PRO
+   ============================================================ */
+
+/* Badge "PRO" — piccola pillola segnale, riusabile inline. */
+.paywall-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  padding: 0.25em 0.5em;
+  border-radius: var(--radius-pill);
+  background: var(--red);
+  color: #fff;
+  vertical-align: middle;
+}
+
+/* Blocco-teaser inline che sostituisce il contenuto gated. */
+.paywall-gate {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 1.1rem 1.25rem;
+  margin: 0.75rem 0 1rem;
+  background: var(--surface);
+  border: 1px dashed var(--red);
+  border-radius: var(--radius-lg);
+}
+
+.paywall-gate .paywall-msg {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: var(--text-sm);
+  max-width: 60ch;
+}
+
+/* Elementi gated ma ancora visibili (checkbox, dot, tab). */
+.locked {
+  opacity: 0.55;
+}
+
+.wizard-dot.locked { opacity: 0.4; cursor: not-allowed; }
+
+/* I bottoni .locked restano cliccabili: aprono il paywall. */
+.tab-btn.locked,
+.btn.locked { cursor: pointer; }
+
+/* ---- Modale paywall ---- */
+.paywall-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.paywall-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.paywall-modal-card {
+  position: relative;
+  z-index: 1;
+  max-width: 420px;
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.paywall-modal-card h2 { margin: 0.6rem 0 0.4rem; }
+.paywall-modal-card p { margin: 0 0 1.25rem; color: var(--ink-muted); }
+
+.paywall-modal-actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+/* ---- Voce nav PRO attiva ---- */
+.nav-pro-active > a { color: var(--red); font-weight: 600; }
+
+/* ---- Pagina vendita (buy) ---- */
+.buy-hero { text-align: left; }
+.buy-price { margin-bottom: 0.4rem; }
+.buy-price-amount {
+  font-family: var(--font-display, var(--font-mono));
+  font-size: 2.4rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.buy-price-note { color: var(--ink-muted); font-size: var(--text-sm); }
+.buy-hero .btn { margin-right: 0.6rem; margin-top: 0.5rem; }
+
+.buy-video-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  border: 1px dashed var(--border);
+}
+
+.buy-compare .buy-pro-cell { color: var(--trace); font-weight: 600; }
+
+.lic-feedback { margin: 0.6rem 0 0; font-size: var(--text-sm); min-height: 1.2em; }
+.lic-feedback.is-ok { color: var(--trace); }
+.lic-feedback.is-error { color: var(--red); }

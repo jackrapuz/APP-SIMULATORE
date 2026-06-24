@@ -128,6 +128,12 @@
     var goalTag = prefs.goal
       ? '<span class="tag tag-red">🎯 ' + escapeHtml(prefs.goal) + '</span>' : '';
 
+    /* Chip stato licenza PRO. */
+    var info = utils.licenseInfo();
+    var proTag = info.valid
+      ? '<span class="tag tag-red">PRO ✓</span>'
+      : (info.trialActive ? '<span class="tag tag-tan">PRO trial</span>' : '');
+
     container.innerHTML =
       '<div class="section-header">' +
         '<h1>Profilo Pilota</h1>' +
@@ -142,7 +148,7 @@
           '<div class="pilot-tag" id="pilot-tag-text">' +
             escapeHtml(id.tag || 'PILOTA SENZA NOME') + '</div>' +
           (id.bio ? '<p class="pilot-bio">' + escapeHtml(id.bio) + '</p>' : '') +
-          '<div class="pilot-tags">' + levelTag + goalTag + '</div>' +
+          '<div class="pilot-tags">' + levelTag + goalTag + proTag + '</div>' +
         '</div>' +
       '</div>' +
 

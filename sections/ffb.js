@@ -122,6 +122,7 @@
   ];
 
   function render(container, state, utils) {
+    var pro = utils.isPro();
     container.innerHTML =
       '<div class="section-header">' +
         '<h1>Force Feedback</h1>' +
@@ -158,46 +159,52 @@
 
       /* Parametri */
       '<h2 class="mb-2">Parametri Fanatec — Tuning Menu</h2>' +
-      '<div class="table-wrap mb-4">' +
-        '<table class="data-table">' +
-          '<thead><tr><th>Sigla</th><th>Nome</th><th>Range</th><th>Default</th><th>Descrizione</th><th>Consiglio pratico</th></tr></thead>' +
-          '<tbody>' +
-          FFB_PARAMS.map(function (p) {
-            return '<tr>' +
-              '<td><span class="mono">' + p.sig + '</span></td>' +
-              '<td style="white-space:nowrap;">' + p.nome + '</td>' +
-              '<td><span class="badge">' + p.range + '</span></td>' +
-              '<td><span class="mono text-red">' + p.def + '</span></td>' +
-              '<td>' + p.desc + '</td>' +
-              '<td class="text-muted" style="font-size:var(--text-xs);">' + p.tip + '</td>' +
-            '</tr>';
-          }).join('') +
-          '</tbody>' +
-        '</table>' +
-      '</div>' +
+      (pro
+        ? '<div class="table-wrap mb-4">' +
+          '<table class="data-table">' +
+            '<thead><tr><th>Sigla</th><th>Nome</th><th>Range</th><th>Default</th><th>Descrizione</th><th>Consiglio pratico</th></tr></thead>' +
+            '<tbody>' +
+            FFB_PARAMS.map(function (p) {
+              return '<tr>' +
+                '<td><span class="mono">' + p.sig + '</span></td>' +
+                '<td style="white-space:nowrap;">' + p.nome + '</td>' +
+                '<td><span class="badge">' + p.range + '</span></td>' +
+                '<td><span class="mono text-red">' + p.def + '</span></td>' +
+                '<td>' + p.desc + '</td>' +
+                '<td class="text-muted" style="font-size:var(--text-xs);">' + p.tip + '</td>' +
+              '</tr>';
+            }).join('') +
+            '</tbody>' +
+          '</table>' +
+        '</div>'
+        : utils.paywallCardHTML('La tabella completa dei parametri FFB Fanatec è PRO.')) +
 
       /* Profili preset */
       '<h2 class="mb-2">Profili preset per sim</h2>' +
-      '<div class="tab-switcher" id="ffb-tabs">' +
-      Object.keys(PROFILES).map(function (k, i) {
-        return '<button class="tab-btn' + (i === 0 ? ' active' : '') + '" data-tab="' + k + '">' + k + '</button>';
-      }).join('') +
-      '</div>' +
-      '<div id="ffb-tab-content"></div>' +
+      (pro
+        ? '<div class="tab-switcher" id="ffb-tabs">' +
+          Object.keys(PROFILES).map(function (k, i) {
+            return '<button class="tab-btn' + (i === 0 ? ' active' : '') + '" data-tab="' + k + '">' + k + '</button>';
+          }).join('') +
+          '</div>' +
+          '<div id="ffb-tab-content"></div>'
+        : utils.paywallCardHTML('I profili preset FFB pronti all\'uso per ogni sim sono PRO.')) +
 
       /* Diagnostica */
       '<h2 class="mb-2 mt-4">Diagnostica — sintomi e soluzioni</h2>' +
-      '<div id="ffb-accordion">' +
-      DIAGNOSTICA.map(function (d) {
-        return '<details>' +
-          '<summary>' + d.sintomo + '</summary>' +
-          '<div class="details-body">' +
-            '<p><strong>Causa probabile:</strong> ' + d.causa + '</p>' +
-            '<p style="margin-top:0.5rem;"><strong>Soluzione:</strong> ' + d.azione + '</p>' +
-          '</div>' +
-        '</details>';
-      }).join('') +
-      '</div>' +
+      (pro
+        ? '<div id="ffb-accordion">' +
+          DIAGNOSTICA.map(function (d) {
+            return '<details>' +
+              '<summary>' + d.sintomo + '</summary>' +
+              '<div class="details-body">' +
+                '<p><strong>Causa probabile:</strong> ' + d.causa + '</p>' +
+                '<p style="margin-top:0.5rem;"><strong>Soluzione:</strong> ' + d.azione + '</p>' +
+              '</div>' +
+            '</details>';
+          }).join('') +
+          '</div>'
+        : utils.paywallCardHTML('La diagnostica FFB sintomo→soluzione è PRO.')) +
 
       utils.completionBarHTML('ffb');
 

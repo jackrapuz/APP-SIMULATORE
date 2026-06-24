@@ -29,8 +29,204 @@
   var STATE = {
     progress: load('progress', {}),
     notebook: load('notebook', { ffb: [], sessions: [], setups: [] }),
-    settings: load('settings', {})
+    settings: load('settings', {}),
+    license: load('license', { key: null, valid: false, trialStart: null })
   };
+
+  /* ============================================================
+     LICENZA PRO — firma asimmetrica ECDSA P-256 (Web Crypto)
+     ------------------------------------------------------------
+     La verifica è OFFLINE: la chiave pubblica è embedded qui sotto,
+     così l'app può validare una license key senza backend. La firma
+     impedisce di *forgiare* una key valida; NON impedisce di patchare
+     questo JS in chiaro. È quindi "soft gating" a bassa frizione, non
+     DRM (vedi LICENSING.md).
+
+     Formato key:  base64url(payloadJSON) "." base64url(firma)
+     payload:      { name:<racing tag>, product:'sra', v:1 }
+     ============================================================ */
+
+  /* SPKI (base64) della chiave pubblica. Generata con tools/keygen.mjs.
+     NOTA: questa è una coppia di SVILUPPO (funziona per testare il flusso).
+     Prima di vendere, rigenera le chiavi e sostituisci questo valore con la
+     pubblica di produzione, conservando la privata al sicuro (vedi LICENSING.md). */
+  var PUBLIC_KEY_SPKI = 'MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAElO75ds14nOjhKZJZXT4LaZaTVYN1C30YJSptbNZUWC2B6PW4dSdb8zdMyrKsVgsNe6yv3GGS5HP+4Uwu35PV9Q==';
+
+  var TRIAL_MS = 7 * 24 * 60 * 60 * 1000;
+
+  function b64ToBytes(b64) {
+    var bin = atob(b64);
+    var out = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+    return out;
+  }
+
+  function b64urlToBytes(b64url) {
+    var b64 = b64url.replace(/-/g, '+').replace(/_/g, '/');
+    while (b64.length % 4) b64 += '=';
+    return b64ToBytes(b64);
+  }
+
+  /* Verifica una license key. Restituisce una Promise<{ok, name?}>.
+     Controlla firma + product 'sra' + che il name corrisponda al racing
+     tag del profilo (anti-condivisione soft). */
+  function verifyKey(key) {
+    if (!key || typeof key !== 'string' || key.indexOf('.') === -1) {
+      return Promise.resolve({ ok: false });
+    }
+    if (!(window.crypto && window.crypto.subtle)) {
+      return Promise.resolve({ ok: false });
+    }
+    var parts = key.split('.');
+    var payloadBytes, payload, sigBytes;
+    try {
+      payloadBytes = b64urlToBytes(parts[0]);
+      sigBytes = b64urlToBytes(parts[1]);
+      payload = JSON.parse(new TextDecoder().decode(payloadBytes));
+    } catch (e) {
+      return Promise.resolve({ ok: false });
+    }
+    if (!payload || payload.product !== 'sra') {
+      return Promise.resolve({ ok: false });
+    }
+    return crypto.subtle.importKey(
+      'spki', b64ToBytes(PUBLIC_KEY_SPKI),
+      { name: 'ECDSA', namedCurve: 'P-256' }, false, ['verify']
+    ).then(function (pub) {
+      return crypto.subtle.verify(
+        { name: 'ECDSA', hash: 'SHA-256' }, pub, sigBytes, payloadBytes
+      );
+    }).then(function (valid) {
+      if (!valid) return { ok: false };
+      /* Lega la key al racing tag del profilo, se impostato. */
+      var prof = load('profile', null);
+      var tag = (prof && prof.identity && prof.identity.tag || '').trim();
+      if (tag && payload.name && payload.name !== tag) {
+        return { ok: false, reason: 'tag' };
+      }
+      return { ok: true, name: payload.name };
+    }).catch(function () {
+      return { ok: false };
+    });
+  }
+
+  function trialActive() {
+    var t = STATE.license.trialStart;
+    return !!t && (Date.now() - t) < TRIAL_MS;
+  }
+
+  function trialDaysLeft() {
+    if (!trialActive()) return 0;
+    return Math.ceil((TRIAL_MS - (Date.now() - STATE.license.trialStart)) / 86400000);
+  }
+
+  /* Lettura sincrona usata in tutti i render. */
+  function isPro() {
+    return STATE.license.valid || trialActive();
+  }
+
+  function startTrial() {
+    if (!STATE.license.trialStart) {
+      STATE.license.trialStart = Date.now();
+      save('license', STATE.license);
+    }
+    refreshProMarkers();
+    return trialActive();
+  }
+
+  /* Attiva una license key: verifica async, persiste solo se valida. */
+  function activateLicense(key) {
+    key = (key || '').trim();
+    return verifyKey(key).then(function (res) {
+      if (res.ok) {
+        STATE.license.key = key;
+        STATE.license.valid = true;
+        save('license', STATE.license);
+        refreshProMarkers();
+        return { ok: true, name: res.name };
+      }
+      return { ok: false, error: res.reason === 'tag'
+        ? 'Questa key è intestata a un altro racing tag.'
+        : 'Key non valida.' };
+    });
+  }
+
+  function licenseInfo() {
+    var prof = load('profile', null);
+    var tag = (prof && prof.identity && prof.identity.tag) || null;
+    return {
+      valid: STATE.license.valid,
+      trialActive: trialActive(),
+      trialDaysLeft: trialDaysLeft(),
+      name: tag
+    };
+  }
+
+  /* Aggiorna i marcatori PRO globali (voce nav) dopo un cambio di stato. */
+  function refreshProMarkers() {
+    buildNav();
+    var current = location.hash.slice(1) || 'profilo';
+    document.querySelectorAll('#nav-list li').forEach(function (li) {
+      li.classList.toggle('active', li.dataset.id === current);
+    });
+  }
+
+  /* ---------- Paywall UI riusabile ---------- */
+
+  /* Blocco-teaser inline: sostituisce il contenuto gated con una CTA. */
+  function paywallCardHTML(msg) {
+    return '<div class="paywall-gate">' +
+      '<span class="paywall-badge">PRO</span>' +
+      '<p class="paywall-msg">' + (msg || 'Questo contenuto fa parte della versione PRO.') + '</p>' +
+      '<a href="#buy" class="btn">Sblocca PRO</a>' +
+    '</div>';
+  }
+
+  /* Overlay modale accessibile per i blocchi "hard" (es. tab lock). */
+  function showPaywallModal(msg) {
+    var existing = document.getElementById('paywall-modal');
+    if (existing) existing.remove();
+
+    var prevFocus = document.activeElement;
+    var wrap = document.createElement('div');
+    wrap.id = 'paywall-modal';
+    wrap.className = 'paywall-modal';
+    wrap.innerHTML =
+      '<div class="paywall-modal-backdrop" data-close></div>' +
+      '<div class="paywall-modal-card" role="dialog" aria-modal="true" aria-labelledby="paywall-modal-title">' +
+        '<span class="paywall-badge">PRO</span>' +
+        '<h2 id="paywall-modal-title">Contenuto PRO</h2>' +
+        '<p>' + (msg || 'Sblocca tutte le sezioni avanzate con la versione PRO.') + '</p>' +
+        '<div class="paywall-modal-actions">' +
+          '<a href="#buy" class="btn" data-close>Sblocca PRO</a>' +
+          '<button type="button" class="btn btn-ghost" data-close>Chiudi</button>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(wrap);
+
+    function close() {
+      document.removeEventListener('keydown', onKey);
+      wrap.remove();
+      if (prevFocus && prevFocus.focus) prevFocus.focus();
+    }
+    function onKey(e) {
+      if (e.key === 'Escape') { close(); return; }
+      if (e.key === 'Tab') {
+        /* Focus trap sui soli elementi interattivi della card. */
+        var f = wrap.querySelectorAll('a[href], button');
+        if (!f.length) return;
+        var first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    }
+    wrap.querySelectorAll('[data-close]').forEach(function (el) {
+      el.addEventListener('click', close);
+    });
+    document.addEventListener('keydown', onKey);
+    var firstBtn = wrap.querySelector('.btn');
+    if (firstBtn) firstBtn.focus();
+  }
 
   /* ---------- updateProgress ---------- */
 
@@ -240,10 +436,17 @@
     if (!list) return;
 
     list.innerHTML = sections.map(function (s) {
-      return '<li data-id="' + s.id + '">' +
+      var label = s.label;
+      var cls = '';
+      /* La voce vendita riflette lo stato licenza. */
+      if (s.id === 'buy' && isPro()) {
+        label = 'PRO ✓';
+        cls = ' class="nav-pro-active"';
+      }
+      return '<li data-id="' + s.id + '"' + cls + '>' +
         '<a href="#' + s.id + '">' +
         '<span class="nav-icon">' + s.icon + '</span>' +
-        s.label +
+        label +
         '</a></li>';
     }).join('');
   }
@@ -289,6 +492,12 @@
       shiftStripCells: shiftStripCells,
       globalPct: globalPct,
       computeActivity: computeActivity,
+      isPro: isPro,
+      activateLicense: activateLicense,
+      startTrial: startTrial,
+      licenseInfo: licenseInfo,
+      paywallCardHTML: paywallCardHTML,
+      showPaywallModal: showPaywallModal,
       STATE: STATE
     };
     section.render(main, STATE, utils);
@@ -327,12 +536,23 @@
   /* ---------- Init ---------- */
 
   window.addEventListener('DOMContentLoaded', function () {
-    buildNav();
     renderBrand();
-    renderSidebarProgress();
 
-    var initialId = location.hash.slice(1) || 'profilo';
-    navigate(initialId);
+    /* Verifica l'eventuale key salvata PRIMA del primo render, così
+       isPro() è già corretto e non c'è flash di contenuto bloccato. */
+    var verifyStep = STATE.license.key
+      ? verifyKey(STATE.license.key).then(function (res) {
+          STATE.license.valid = !!res.ok;
+          if (!res.ok) save('license', STATE.license);
+        })
+      : Promise.resolve();
+
+    verifyStep.then(function () {
+      buildNav();
+      renderSidebarProgress();
+      var initialId = location.hash.slice(1) || 'profilo';
+      navigate(initialId);
+    });
 
     window.addEventListener('hashchange', function () {
       navigate(location.hash.slice(1) || 'profilo');
@@ -358,5 +578,9 @@
   window.SimRacing.load = load;
   window.SimRacing.shiftStripHTML = shiftStripHTML;
   window.SimRacing.shiftStripCells = shiftStripCells;
+  window.SimRacing.isPro = isPro;
+  window.SimRacing.activateLicense = activateLicense;
+  window.SimRacing.startTrial = startTrial;
+  window.SimRacing.licenseInfo = licenseInfo;
 
 }());
